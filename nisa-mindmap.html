@@ -278,6 +278,11 @@ header {
 </div>
 
 <script>
+function toArabicNums(str) {
+  const map = {'0':'٠','1':'١','2':'٢','3':'٣','4':'٤','5':'٥','6':'٦','7':'٧','8':'٨','9':'٩'};
+  return 'آية ' + String(str).replace(/[0-9]/g, d => map[d]);
+}
+
 const BRANCHES = [
   {
     title: "أحكام الأسرة والزواج",
@@ -407,7 +412,7 @@ BRANCHES.forEach((b, i) => {
     <li>
       <span class="topic-dot" style="background:${b.color}"></span>
       <span>
-        <span class="ayah-tag" style="background:${b.color}22;color:${b.color}">&#x200F;آية ${t.ayah}</span>
+        <span class="ayah-tag" style="background:${b.color}22;color:${b.color}">${toArabicNums(t.ayah)}</span>
         ${t.text}
       </span>
     </li>
