@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>حافظ — موقع حفظ ودراسة القرآن الكريم</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;400;600;700;900&display=swap');
+
+:root {
+  --bg:      #0D1B2A;
+  --bg2:     #112236;
+  --bg3:     #162C44;
+  --gold:    #D4A847;
+  --gold-lt: #F0CC78;
+  --white:   #F4EFE4;
+  --muted:   #8A9BB0;
+  --line:    rgba(212,168,71,0.18);
+  --teal:    #2A8A8A;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: 'Cairo', sans-serif;
+  min-height: 100vh;
+}
+
+/* ── Hero ── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* geometric background pattern */
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(212,168,71,0.06) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(42,138,138,0.06) 0%, transparent 50%),
+    repeating-conic-gradient(rgba(212,168,71,0.03) 0deg, transparent 1deg, transparent 29deg, rgba(212,168,71,0.03) 30deg);
+  background-size: 100% 100%, 100% 100%, 60px 60px;
+  pointer-events: none;
+}
+
+.hero-inner { position: relative; max-width: 700px; }
+
+.bismillah {
+  font-family: 'Amiri', serif;
+  font-size: clamp(18px, 4vw, 28px);
+  color: rgba(240,204,120,0.6);
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+
+.logo-arabic {
+  font-family: 'Amiri', serif;
+  font-size: clamp(52px, 12vw, 96px);
+  color: var(--gold);
+  line-height: 1;
+  text-shadow: 0 0 60px rgba(212,168,71,0.4);
+  margin-bottom: 4px;
+}
+
+.logo-sub {
+  font-size: clamp(13px, 2.5vw, 17px);
+  color: var(--muted);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+
+.hero-desc {
+  font-size: clamp(14px, 2.5vw, 17px);
+  color: rgba(244,239,228,0.7);
+  line-height: 2;
+  max-width: 500px;
+  margin: 0 auto 40px;
+}
+
+.scroll-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--gold);
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid rgba(212,168,71,0.3);
+  padding: 10px 24px;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: all .2s;
+  cursor: pointer;
+  background: transparent;
+  font-family: 'Cairo', sans-serif;
+}
+.scroll-cta:hover {
+  background: rgba(212,168,71,0.1);
+  border-color: var(--gold);
+}
+
+/* ── Surahs section ── */
+.section {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 60px 20px 80px;
+}
+
+.section-label {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.section-title {
+  font-family: 'Amiri', serif;
+  font-size: clamp(24px, 5vw, 38px);
+  color: var(--white);
+  margin-bottom: 6px;
+}
+
+.section-desc {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 40px;
+  line-height: 1.8;
+}
+
+/* ── Surah cards ── */
+.surah-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (min-width: 600px) {
+  .surah-grid { grid-template-columns: 1fr 1fr; }
+}
+
+.surah-card {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: transform .2s, box-shadow .2s;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  position: relative;
+}
+.surah-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0,0,0,.3);
+}
+
+.card-top {
+  padding: 28px 24px 20px;
+  position: relative;
+}
+.card-num {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: rgba(212,168,71,0.12);
+  border: 1px solid rgba(212,168,71,0.25);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Amiri', serif;
+  font-size: 14px;
+  color: var(--gold);
+}
+.card-name-ar {
+  font-family: 'Amiri', serif;
+  font-size: 36px;
+  color: var(--gold-lt);
+  line-height: 1;
+  margin-bottom: 6px;
+  text-align: center;
+  padding: 0 30px;
+}
+.card-name-en {
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+
+.card-divider {
+  height: 1px;
+  background: var(--line);
+  margin: 0 24px;
+}
+
+.card-bottom {
+  padding: 16px 24px 22px;
+}
+
+.card-meta {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.meta-icon { font-size: 14px; }
+
+.card-pages {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.page-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: var(--bg3);
+  border: 1px solid rgba(255,255,255,.05);
+  text-decoration: none;
+  color: var(--white);
+  font-size: 13px;
+  font-weight: 600;
+  transition: all .2s;
+}
+.page-link:hover {
+  background: rgba(212,168,71,0.1);
+  border-color: rgba(212,168,71,0.3);
+  color: var(--gold-lt);
+}
+.page-link-icon {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+.page-link-arrow {
+  margin-right: auto;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* coming soon card */
+.surah-card.coming-soon {
+  opacity: .45;
+  pointer-events: none;
+}
+.coming-tag {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 1px;
+  background: rgba(138,155,176,0.15);
+  color: var(--muted);
+  border: 1px solid rgba(138,155,176,0.2);
+  border-radius: 20px;
+  padding: 3px 10px;
+  margin-top: 10px;
+}
+
+/* ── Footer ── */
+footer {
+  border-top: 1px solid var(--line);
+  text-align: center;
+  padding: 28px 20px;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 2;
+}
+footer span { color: var(--gold); }
+
+/* glow animation */
+@keyframes glow {
+  0%,100% { text-shadow: 0 0 40px rgba(212,168,71,.3); }
+  50%      { text-shadow: 0 0 70px rgba(212,168,71,.6); }
+}
+.logo-arabic { animation: glow 4s ease-in-out infinite; }
+</style>
+</head>
+<body>
+
+<!-- ── Hero ── -->
+<section class="hero" id="top">
+  <div class="hero-inner">
+    <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+    <div class="logo-arabic">حافظ</div>
+    <div class="logo-sub">Hafiz · Quran Study</div>
+    <p class="hero-desc">
+      منصة تفاعلية لحفظ ودراسة سور القرآن الكريم<br>
+      بالخرائط الذهنية والرسوم التوضيحية
+    </p>
+    <button class="scroll-cta" onclick="document.getElementById('surahs').scrollIntoView({behavior:'smooth'})">
+      ابدأ الدراسة ↓
+    </button>
+  </div>
+</section>
+
+<!-- ── Surahs ── -->
+<section class="section" id="surahs">
+  <div class="section-label">المحتوى المتاح</div>
+  <h2 class="section-title">السور القرآنية</h2>
+  <p class="section-desc">كل سورة تحتوي على صفحات تفاعلية للدراسة والحفظ</p>
+
+  <div class="surah-grid">
+
+    <!-- سورة النساء -->
+    <div class="surah-card">
+      <div class="card-top">
+        <div class="card-num">٤</div>
+        <div class="card-name-ar">النساء</div>
+        <div class="card-name-en">An-Nisa · The Women</div>
+      </div>
+      <div class="card-divider"></div>
+      <div class="card-bottom">
+        <div class="card-meta">
+          <div class="meta-item"><span class="meta-icon">📖</span> ١٧٦ آية</div>
+          <div class="meta-item"><span class="meta-icon">🕌</span> مدنية</div>
+          <div class="meta-item"><span class="meta-icon">📚</span> الجزء ٤-٦</div>
+        </div>
+        <div class="card-pages">
+          <a href="mirath.html" class="page-link">
+            <span class="page-link-icon" style="background:rgba(42,107,107,0.2)">⚖️</span>
+            تقسيم الميراث — آية ١١
+            <span class="page-link-arrow">←</span>
+          </a>
+          <a href="nisa-mindmap.html" class="page-link">
+            <span class="page-link-icon" style="background:rgba(212,168,71,0.15)">🗺️</span>
+            الخريطة الذهنية الكاملة
+            <span class="page-link-arrow">←</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- سورة البقرة — قريباً -->
+    <div class="surah-card coming-soon">
+      <div class="card-top">
+        <div class="card-num">٢</div>
+        <div class="card-name-ar">البقرة</div>
+        <div class="card-name-en">Al-Baqarah · The Cow</div>
+      </div>
+      <div class="card-divider"></div>
+      <div class="card-bottom">
+        <div class="card-meta">
+          <div class="meta-item"><span class="meta-icon">📖</span> ٢٨٦ آية</div>
+          <div class="meta-item"><span class="meta-icon">🕌</span> مدنية</div>
+        </div>
+        <div style="text-align:center">
+          <span class="coming-tag">قريباً · Coming Soon</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- سورة آل عمران — قريباً -->
+    <div class="surah-card coming-soon">
+      <div class="card-top">
+        <div class="card-num">٣</div>
+        <div class="card-name-ar">آل عمران</div>
+        <div class="card-name-en">Ali 'Imran · The Family of Imran</div>
+      </div>
+      <div class="card-divider"></div>
+      <div class="card-bottom">
+        <div class="card-meta">
+          <div class="meta-item"><span class="meta-icon">📖</span> ٢٠٠ آية</div>
+          <div class="meta-item"><span class="meta-icon">🕌</span> مدنية</div>
+        </div>
+        <div style="text-align:center">
+          <span class="coming-tag">قريباً · Coming Soon</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- سورة الكهف — قريباً -->
+    <div class="surah-card coming-soon">
+      <div class="card-top">
+        <div class="card-num">١٨</div>
+        <div class="card-name-ar">الكهف</div>
+        <div class="card-name-en">Al-Kahf · The Cave</div>
+      </div>
+      <div class="card-divider"></div>
+      <div class="card-bottom">
+        <div class="card-meta">
+          <div class="meta-item"><span class="meta-icon">📖</span> ١١٠ آيات</div>
+          <div class="meta-item"><span class="meta-icon">🕌</span> مكية</div>
+        </div>
+        <div style="text-align:center">
+          <span class="coming-tag">قريباً · Coming Soon</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div>﴿ وَرَتِّلِ الْقُرْآنَ تَرْتِيلًا ﴾ — المزمل: ٤</div>
+  <div style="margin-top:8px">صُنع بـ <span>♥</span> لخدمة كتاب الله</div>
+</footer>
+
+</body>
+</html>

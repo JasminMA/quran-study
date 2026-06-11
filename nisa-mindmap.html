@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>خريطة ذهنية — سورة النساء</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;400;600;700;900&display=swap');
+
+:root {
+  --bg: #0D1B2A;
+  --bg2: #112236;
+  --gold: #D4A847;
+  --gold-lt: #F0CC78;
+  --white: #F4EFE4;
+  --muted: #8A9BB0;
+  --line: rgba(212,168,71,0.2);
+
+  --c1: #4A90D9; /* أحكام الأسرة - blue */
+  --c2: #5BAD72; /* أحكام الميراث - green */
+  --c3: #C96B3A; /* أحكام الجهاد - orange */
+  --c4: #9B59B6; /* العقيدة والتوحيد - purple */
+  --c5: #D4A847; /* أحكام المعاملات - gold */
+  --c6: #E84393; /* حقوق الضعفاء - pink */
+  --c7: #3BBFBF; /* المنافقون - teal */
+  --c8: #E05555; /* أهل الكتاب - red */
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: 'Cairo', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Header ── */
+header {
+  text-align: center;
+  padding: 32px 20px 24px;
+  position: relative;
+  border-bottom: 1px solid var(--line);
+}
+.surah-name {
+  font-family: 'Amiri', serif;
+  font-size: clamp(32px, 7vw, 56px);
+  color: var(--gold);
+  letter-spacing: 2px;
+  text-shadow: 0 0 40px rgba(212,168,71,0.4);
+  line-height: 1;
+}
+.surah-meta {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 8px;
+  letter-spacing: 1px;
+}
+.bismillah {
+  font-family: 'Amiri', serif;
+  font-size: clamp(16px, 3vw, 22px);
+  color: rgba(240,204,120,0.7);
+  margin-top: 10px;
+}
+
+/* ── Layout ── */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 28px 16px 60px;
+}
+
+/* ── Center node ── */
+.center-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 32px;
+}
+.center-circle {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #1E3A5A, #0D1B2A);
+  border: 3px solid var(--gold);
+  box-shadow: 0 0 30px rgba(212,168,71,0.35), inset 0 0 20px rgba(212,168,71,0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Amiri', serif;
+  font-size: 20px;
+  color: var(--gold-lt);
+  text-align: center;
+  line-height: 1.4;
+  cursor: default;
+}
+.center-sub {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 8px;
+  font-family: 'Cairo', sans-serif;
+}
+
+/* ── Branch grid ── */
+.branches {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+@media (min-width: 700px) {
+  .branches { grid-template-columns: 1fr 1fr 1fr 1fr; }
+}
+
+/* ── Branch card ── */
+.branch {
+  border-radius: 14px;
+  border: 1.5px solid;
+  background: var(--bg2);
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+  overflow: hidden;
+  position: relative;
+}
+.branch:hover { transform: translateY(-3px); }
+.branch.open  { box-shadow: 0 0 20px rgba(255,255,255,.07); }
+
+.branch-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 14px 12px;
+}
+.branch-icon {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.branch-title {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.4;
+  flex: 1;
+}
+.branch-ayat {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 2px;
+  font-weight: 400;
+}
+.branch-arrow {
+  font-size: 12px;
+  color: var(--muted);
+  transition: transform .25s;
+  flex-shrink: 0;
+}
+.branch.open .branch-arrow { transform: rotate(180deg); }
+
+/* ── Sub-topics ── */
+.branch-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .35s ease;
+  padding: 0 14px;
+}
+.branch-body.open {
+  max-height: 600px;
+  padding-bottom: 14px;
+}
+.topic-list {
+  list-style: none;
+  border-top: 1px solid rgba(255,255,255,.06);
+  padding-top: 10px;
+}
+.topic-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 7px 0;
+  border-bottom: 1px dashed rgba(255,255,255,.05);
+  font-size: 12px;
+  line-height: 1.6;
+  color: rgba(244,239,228,.85);
+}
+.topic-list li:last-child { border-bottom: none; }
+.topic-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+.ayah-tag {
+  font-size: 10px;
+  border-radius: 4px;
+  padding: 1px 5px;
+  margin-right: 4px;
+  opacity: .75;
+  flex-shrink: 0;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+/* ── Stats bar ── */
+.stats {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  margin: 0 0 28px;
+  flex-wrap: wrap;
+}
+.stat {
+  text-align: center;
+}
+.stat-num {
+  font-family: 'Amiri', serif;
+  font-size: 28px;
+  color: var(--gold);
+  line-height: 1;
+}
+.stat-label {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+
+/* ── Legend hint ── */
+.hint {
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+/* glow pulse on center */
+@keyframes glow {
+  0%,100% { box-shadow: 0 0 20px rgba(212,168,71,.3), inset 0 0 15px rgba(212,168,71,.06); }
+  50%      { box-shadow: 0 0 40px rgba(212,168,71,.55), inset 0 0 25px rgba(212,168,71,.12); }
+}
+.center-circle { animation: glow 3s ease-in-out infinite; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+  <div class="surah-name">سورة النساء</div>
+  <div class="surah-meta">السورة الرابعة · مدنية · الجزء ٤ و ٥ و ٦</div>
+</header>
+
+<div class="layout">
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num">١٧٦</div><div class="stat-label">آية</div></div>
+    <div class="stat"><div class="stat-num">٨</div><div class="stat-label">محاور رئيسية</div></div>
+    <div class="stat"><div class="stat-num">٣٨</div><div class="stat-label">حكماً تشريعياً</div></div>
+    <div class="stat"><div class="stat-num">٤</div><div class="stat-label">أجزاء</div></div>
+  </div>
+
+  <div class="center-node">
+    <div class="center-circle">سورة<br>النساء</div>
+    <div class="center-sub">اضغط على أي محور لتوسيعه</div>
+  </div>
+
+  <p class="hint">▾ اضغط على البطاقة لعرض التفاصيل</p>
+
+  <div class="branches" id="branches"></div>
+
+</div>
+
+<script>
+const BRANCHES = [
+  {
+    title: "أحكام الأسرة والزواج",
+    ayat: "الآيات ١ — ٢٥",
+    icon: "👨‍👩‍👧",
+    color: "var(--c1)",
+    topics: [
+      { text: "الخلق من نفس واحدة وتكريم الإنسان", ayah: "١" },
+      { text: "حقوق اليتامى وصون أموالهم", ayah: "٢-٦" },
+      { text: "إباحة تعدد الزوجات بشرط العدل", ayah: "٣" },
+      { text: "إيتاء المرأة مهرها نحلة", ayah: "٤" },
+      { text: "المحرمات من النساء في الزواج", ayah: "٢٢-٢٤" },
+      { text: "نكاح المتعة وتحريمه", ayah: "٢٤" },
+      { text: "حكم نكاح الإماء", ayah: "٢٥" },
+    ]
+  },
+  {
+    title: "أحكام الميراث والفرائض",
+    ayat: "الآيات ٧ — ١٤ · ١٧٦",
+    icon: "⚖️",
+    color: "var(--c2)",
+    topics: [
+      { text: "للرجال نصيب مما ترك الوالدان والأقربون", ayah: "٧" },
+      { text: "للذكر مثل حظ الأنثيين", ayah: "١١" },
+      { text: "نصيب البنات: النصف والثلثان", ayah: "١١" },
+      { text: "نصيب الأبوين: السدس والثلث", ayah: "١١" },
+      { text: "نصيب الزوج والزوجة", ayah: "١٢" },
+      { text: "ميراث الكلالة", ayah: "١٢ · ١٧٦" },
+      { text: "الوصية قبل قسمة الميراث", ayah: "١١-١٢" },
+    ]
+  },
+  {
+    title: "حقوق الضعفاء والمستضعفين",
+    ayat: "الآيات ٢ — ١٠ · ٧٥",
+    icon: "🤲",
+    color: "var(--c6)",
+    topics: [
+      { text: "صون أموال اليتامى وعدم أكلها ظلماً", ayah: "٢-٣" },
+      { text: "حقوق المرأة والنهي عن إرثها كرهاً", ayah: "١٩" },
+      { text: "النهي عن عضل النساء لأخذ المهر", ayah: "١٩" },
+      { text: "الدفاع عن المستضعفين والمظلومين", ayah: "٧٥" },
+      { text: "النهي عن أكل أموال الناس بالباطل", ayah: "٢٩" },
+      { text: "النهي عن قتل النفس والانتحار", ayah: "٢٩" },
+    ]
+  },
+  {
+    title: "أحكام المعاملات والعدل",
+    ayat: "الآيات ٢٩ — ٥٨",
+    icon: "🏛️",
+    color: "var(--c5)",
+    topics: [
+      { text: "أداء الأمانات وردها لأهلها", ayah: "٥٨" },
+      { text: "الحكم بالعدل بين الناس", ayah: "٥٨" },
+      { text: "طاعة ولاة الأمر ضمن الشريعة", ayah: "٥٩" },
+      { text: "التحكيم في النزاعات بالكتاب والسنة", ayah: "٦٥" },
+      { text: "النهي عن الغلول وخيانة الأمانة", ayah: "١٠٧" },
+      { text: "تحريم الربا وأكل الأموال بالباطل", ayah: "١٦١" },
+    ]
+  },
+  {
+    title: "أحكام الجهاد والهجرة",
+    ayat: "الآيات ٧١ — ١٠٤",
+    icon: "🛡️",
+    color: "var(--c3)",
+    topics: [
+      { text: "الحث على الجهاد وعدم التخاذل", ayah: "٧١-٧٢" },
+      { text: "أحكام صلاة الخوف في الميدان", ayah: "١٠١-١٠٢" },
+      { text: "وجوب الهجرة من دار الكفر", ayah: "٩٧-٩٨" },
+      { text: "النهي عن قتل المؤمن خطأ والكفارة", ayah: "٩٢" },
+      { text: "فضل المجاهدين على القاعدين", ayah: "٩٥" },
+      { text: "التثبت وعدم القول لمن ألقى السلام", ayah: "٩٤" },
+    ]
+  },
+  {
+    title: "المنافقون وصفاتهم",
+    ayat: "الآيات ٦٠ — ٧٠ · ١٣٨-١٤٥",
+    icon: "🎭",
+    color: "var(--c7)",
+    topics: [
+      { text: "التحاكم إلى الطاغوت وذم المنافقين", ayah: "٦٠" },
+      { text: "قسمهم بالله كذباً عند الطلب", ayah: "٦٢" },
+      { text: "بشارتهم بالعذاب الأليم", ayah: "١٣٨" },
+      { text: "موالاتهم الكافرين على المؤمنين", ayah: "١٣٩" },
+      { text: "التذبذب وعدم الثبات على الحق", ayah: "١٤٣" },
+      { text: "الدرك الأسفل من النار جزاؤهم", ayah: "١٤٥" },
+    ]
+  },
+  {
+    title: "العقيدة والتوحيد",
+    ayat: "الآيات ٤٨ · ١١٥ — ١٧٥",
+    icon: "☀️",
+    color: "var(--c4)",
+    topics: [
+      { text: "الله لا يغفر الشرك ويغفر ما دونه", ayah: "٤٨ · ١١٦" },
+      { text: "النهي عن الغلو في الدين", ayah: "١٧١" },
+      { text: "الرد على عقيدة التثليث والتنزيه", ayah: "١٧١" },
+      { text: "الإيمان بالله وملائكته وكتبه ورسله", ayah: "١٣٦" },
+      { text: "النهي عن اتخاذ الكافرين أولياء", ayah: "١٤٤" },
+      { text: "عيسى عليه السلام عبد الله ورسوله", ayah: "١٧١-١٧٢" },
+    ]
+  },
+  {
+    title: "أهل الكتاب واليهود",
+    ayat: "الآيات ١٥٣ — ١٧٦",
+    icon: "📜",
+    color: "var(--c8)",
+    topics: [
+      { text: "مطالبتهم بالكتاب من السماء وعنادهم", ayah: "١٥٣" },
+      { text: "نقضهم الميثاق وقسوة قلوبهم", ayah: "١٥٥" },
+      { text: "افتراؤهم على مريم العظيم", ayah: "١٥٦" },
+      { text: "تبرئة عيسى من الصلب (شبّه لهم)", ayah: "١٥٧" },
+      { text: "تحريمهم طيبات أُحلّت لهم عقوبة", ayah: "١٦٠" },
+      { text: "الراسخون في العلم منهم يؤمنون", ayah: "١٦٢" },
+    ]
+  },
+];
+
+const container = document.getElementById('branches');
+
+BRANCHES.forEach((b, i) => {
+  const card = document.createElement('div');
+  card.className = 'branch';
+  card.style.borderColor = b.color;
+
+  const topicsHTML = b.topics.map(t => `
+    <li>
+      <span class="topic-dot" style="background:${b.color}"></span>
+      <span>
+        <span class="ayah-tag" style="background:${b.color}22;color:${b.color}">آ${t.ayah}</span>
+        ${t.text}
+      </span>
+    </li>
+  `).join('');
+
+  card.innerHTML = `
+    <div class="branch-head">
+      <div class="branch-icon" style="background:${b.color}22">${b.icon}</div>
+      <div class="branch-title">
+        ${b.title}
+        <div class="branch-ayat">${b.ayat}</div>
+      </div>
+      <span class="branch-arrow">▾</span>
+    </div>
+    <div class="branch-body">
+      <ul class="topic-list">${topicsHTML}</ul>
+    </div>
+  `;
+
+  card.addEventListener('click', () => {
+    const body = card.querySelector('.branch-body');
+    const isOpen = card.classList.toggle('open');
+    body.classList.toggle('open', isOpen);
+  });
+
+  container.appendChild(card);
+});
+</script>
+</body>
+</html>
