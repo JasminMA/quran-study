@@ -4,56 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>المتشابهات — سورة النساء</title>
+<link rel="stylesheet" href="assets/css/theme.css">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;400;600;700;900&display=swap');
-
 :root {
-  --bg:      #0D1B2A;
-  --bg2:     #112236;
-  --bg3:     #162C44;
-  --gold:    #D4A847;
-  --gold-lt: #F0CC78;
-  --gold-dk: #A07830;
-  --white:   #F4EFE4;
-  --muted:   #8A9BB0;
-  --line:    rgba(212,168,71,0.18);
   --red:     #E07878;
   --red-bg:  rgba(224,120,120,0.1);
   --gold-bg: rgba(212,168,71,0.1);
-  --teal:    #2A8A8A;
 }
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-  background: var(--bg);
-  color: var(--white);
-  font-family: 'Cairo', sans-serif;
-  min-height: 100vh;
-}
-
-/* ── Back nav ── */
-.back-nav {
-  position: fixed; top: 14px; right: 16px; z-index: 9999;
-  display: flex; align-items: center;
-  background: rgba(13,27,42,.88);
-  backdrop-filter: blur(6px);
-  border: 1px solid rgba(212,168,71,.35);
-  border-radius: 24px;
-  font-family: 'Cairo', sans-serif; font-size: 13px; font-weight: 700;
-  box-shadow: 0 2px 12px rgba(0,0,0,.4);
-  overflow: hidden;
-}
-.back-nav button, .back-nav a {
-  display: flex; align-items: center; gap: 5px;
-  padding: 8px 13px;
-  color: var(--gold); background: none; border: none;
-  text-decoration: none; cursor: pointer;
-  font-family: 'Cairo', sans-serif; font-size: 13px; font-weight: 700;
-  transition: background .18s, color .18s; white-space: nowrap;
-}
-.back-nav button:hover, .back-nav a:hover { background: rgba(212,168,71,.13); color: var(--gold-lt); }
-.back-nav .nav-sep { color: rgba(212,168,71,.3); user-select: none; }
 
 /* ── Header ── */
 header {
@@ -645,11 +602,9 @@ document.getElementById('modal-overlay').addEventListener('click', function(e) {
 
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-// ── Arabic numerals ────────────────────────────────────────────────
-function toAr(n) {
-  return String(n).replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
-}
+
 </script>
+<script src="assets/js/utils.js"></script>
 
 <!-- ── Verse modal ── -->
 <div class="modal-overlay" id="modal-overlay">
