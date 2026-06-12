@@ -314,6 +314,60 @@ main {
   border-radius: 12px; padding: 16px 20px; text-align: right;
 }
 .coming-soon-sub li { margin-bottom: 6px; }
+
+/* ── Chip clickable ── */
+.chip { cursor: pointer; }
+
+/* ── Verse modal ── */
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 10000;
+  background: rgba(0,0,0,.65);
+  backdrop-filter: blur(3px);
+  align-items: center; justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  max-width: 580px; width: 100%;
+  box-shadow: 0 20px 60px rgba(0,0,0,.6);
+  overflow: hidden;
+}
+.modal-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 20px;
+  background: var(--bg3);
+  border-bottom: 1px solid var(--line);
+}
+.modal-ref, .modal-ref-num {
+  font-size: 13px; font-weight: 700; color: var(--gold);
+  display: flex; align-items: center; gap: 8px;
+}
+.modal-close {
+  width: 30px; height: 30px; border-radius: 50%;
+  border: 1px solid var(--line);
+  background: transparent; color: var(--muted);
+  cursor: pointer; font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s, color .15s;
+}
+.modal-close:hover { background: var(--red-bg); color: var(--red); }
+.modal-body { padding: 24px 22px; }
+.modal-verse {
+  font-family: 'Amiri', serif;
+  font-size: clamp(18px, 3.5vw, 24px);
+  line-height: 2.2;
+  color: var(--white);
+  text-align: right;
+}
+.modal-verse .hl { color: var(--gold-lt); background: rgba(212,168,71,.12); padding: 1px 5px; border-radius: 4px; }
+.modal-note {
+  margin-top: 12px; font-size: 12px; color: var(--muted);
+  border-top: 1px solid var(--line); padding-top: 10px;
+}
 </style>
 </head>
 <body>
@@ -462,39 +516,40 @@ function showTab(id) {
   event.currentTarget.classList.add('active');
 }
 
+// ── Verse data (from nisa-khawatim.html) ──────────────────────────
+const VERSES = {
+  5:   { start: "وَلَا تُؤْتُوا السُّفَهَاءَ أَمْوَالَكُمُ الَّتِي جَعَلَ اللَّهُ لَكُمْ قِيَامًا...", end: "وَقُولُوا لَهُمْ قَوْلًا مَّعْرُوفًا" },
+  8:   { start: "وَإِذَا حَضَرَ الْقِسْمَةَ أُولُو الْقُرْبَىٰ وَالْيَتَامَىٰ وَالْمَسَاكِينُ...", end: "وَقُولُوا لَهُمْ قَوْلًا مَّعْرُوفًا" },
+  11:  { start: "يُوصِيكُمُ اللَّهُ فِي أَوْلَادِكُمْ ۖ لِلذَّكَرِ مِثْلُ حَظِّ الْأُنثَيَيْنِ...", end: "إِنَّ اللَّهَ كَانَ عَلِيمًا حَكِيمًا" },
+  16:  { start: null, end: "إِنَّ اللَّهَ كَانَ تَوَّابًا رَّحِيمًا" },
+  17:  { start: "إِنَّمَا التَّوْبَةُ عَلَى اللَّهِ لِلَّذِينَ يَعْمَلُونَ السُّوءَ بِجَهَالَةٍ ثُمَّ يَتُوبُونَ مِن قَرِيبٍ...", end: "وَكَانَ اللَّهُ عَلِيمًا حَكِيمًا" },
+  24:  { start: "وَالْمُحْصَنَاتُ مِنَ النِّسَاءِ إِلَّا مَا مَلَكَتْ أَيْمَانُكُمْ ۖ كِتَابَ اللَّهِ عَلَيْكُمْ...", end: "إِنَّ اللَّهَ كَانَ عَلِيمًا حَكِيمًا" },
+  56:  { start: "إِنَّ الَّذِينَ كَفَرُوا بِآيَاتِنَا سَوْفَ نُصْلِيهِمْ نَارًا...", end: "إِنَّ اللَّهَ كَانَ عَزِيزًا حَكِيمًا" },
+  64:  { start: null, end: "وَلَوَجَدُوا اللَّهَ تَوَّابًا رَّحِيمًا" },
+  92:  { start: "وَمَا كَانَ لِمُؤْمِنٍ أَن يَقْتُلَ مُؤْمِنًا إِلَّا خَطَأً...", end: "وَكَانَ اللَّهُ عَلِيمًا حَكِيمًا" },
+  100: { start: "وَمَن يُهَاجِرْ فِي سَبِيلِ اللَّهِ يَجِدْ فِي الْأَرْضِ مُرَاغَمًا كَثِيرًا وَسَعَةً...", end: "وَكَانَ اللَّهُ غَفُورًا رَّحِيمًا" },
+  104: { start: "وَلَا تَهِنُوا فِي ابْتِغَاءِ الْقَوْمِ ۖ إِن تَكُونُوا تَأْلَمُونَ فَإِنَّهُمْ يَأْلَمُونَ كَمَا تَأْلَمُونَ...", end: "وَكَانَ اللَّهُ عَلِيمًا حَكِيمًا" },
+  110: { start: "وَمَن يَعْمَلْ سُوءًا أَوْ يَظْلِمْ نَفْسَهُ ثُمَّ يَسْتَغْفِرِ اللَّهَ...", end: "يَجِدِ اللَّهَ غَفُورًا رَّحِيمًا" },
+  111: { start: "وَمَن يَكْسِبْ إِثْمًا فَإِنَّمَا يَكْسِبُهُ عَلَىٰ نَفْسِهِ...", end: "وَكَانَ اللَّهُ عَلِيمًا حَكِيمًا" },
+  152: { start: "وَالَّذِينَ آمَنُوا بِاللَّهِ وَرُسُلِهِ وَلَمْ يُفَرِّقُوا بَيْنَ أَحَدٍ مِّنْهُمْ...", end: "وَكَانَ اللَّهُ غَفُورًا رَّحِيمًا" },
+  158: { start: "بَل رَّفَعَهُ اللَّهُ إِلَيْهِ...", end: "وَكَانَ اللَّهُ عَزِيزًا حَكِيمًا" },
+  165: { start: "رُّسُلًا مُّبَشِّرِينَ وَمُنذِرِينَ لِئَلَّا يَكُونَ لِلنَّاسِ عَلَى اللَّهِ حُجَّةٌ بَعْدَ الرُّسُلِ...", end: "وَكَانَ اللَّهُ عَزِيزًا حَكِيمًا" },
+  170: { start: "يَا أَيُّهَا النَّاسُ قَدْ جَاءَكُمُ الرَّسُولُ بِالْحَقِّ مِن رَّبِّكُمْ...", end: "وَكَانَ اللَّهُ عَلِيمًا حَكِيمًا" },
+};
+
 // ── Ending groups data ─────────────────────────────────────────────
 const ENDINGS = [
-  {
-    text: 'عَلِيمًا حَكِيمًا',
-    verses: [11, 17, 24, 92, 104, 111, 170],
-    note: 'الأكثر تكراراً في السورة — ٧ آيات'
-  },
-  {
-    text: 'عَزِيزًا حَكِيمًا',
-    verses: [56, 158, 165],
-    note: 'ثلاث آيات — لا تَلتبس مع: عَلِيمًا حَكِيمًا'
-  },
-  {
-    text: 'غَفُورًا رَّحِيمًا',
-    verses: [100, 110, 152],
-    note: 'ثلاث آيات في سياق المغفرة والرحمة'
-  },
-  {
-    text: 'قَوْلًا مَّعْرُوفًا',
-    verses: [5, 8],
-    note: 'آيتان عن التعامل مع اليتامى والضعفاء'
-  },
-  {
-    text: 'تَوَّابًا رَّحِيمًا',
-    verses: [16, 64],
-    note: 'آيتان عن التوبة والعفو'
-  },
+  { text: 'عَلِيمًا حَكِيمًا',  verses: [11, 17, 24, 92, 104, 111, 170], note: 'الأكثر تكراراً في السورة — ٧ آيات' },
+  { text: 'عَزِيزًا حَكِيمًا',  verses: [56, 158, 165],                  note: 'ثلاث آيات — لا تَلتبس مع: عَلِيمًا حَكِيمًا' },
+  { text: 'غَفُورًا رَّحِيمًا', verses: [100, 110, 152],                  note: 'ثلاث آيات في سياق المغفرة والرحمة' },
+  { text: 'قَوْلًا مَّعْرُوفًا',verses: [5, 8],                          note: 'آيتان عن التعامل مع اليتامى والضعفاء' },
+  { text: 'تَوَّابًا رَّحِيمًا',verses: [16, 64],                        note: 'آيتان عن التوبة والعفو' },
 ];
 
 const grid = document.getElementById('endings-grid');
 ENDINGS.forEach(g => {
   const chips = g.verses.map(v =>
-    `<span class="chip">${toAr(v)}</span>`
+    `<span class="chip" onclick="openModal(${v})">${toAr(v)}</span>`
   ).join('');
   grid.innerHTML += `
     <div class="ending-card">
@@ -540,10 +595,54 @@ NEAR.forEach(p => {
   `;
 });
 
+// ── Modal ──────────────────────────────────────────────────────────
+function openModal(num) {
+  const v = VERSES[num];
+  if (!v) return;
+  const overlay = document.getElementById('modal-overlay');
+  document.getElementById('modal-ref-num').textContent = 'النساء · آية ' + toAr(num);
+  const bodyEl = document.getElementById('modal-verse-body');
+  if (v.start) {
+    bodyEl.innerHTML = `﴿ ${v.start} <span class="hl">${v.end}</span> ﴾`;
+  } else {
+    bodyEl.innerHTML = `﴿ ... <span class="hl">${v.end}</span> ﴾`;
+    document.getElementById('modal-note').style.display = 'block';
+  }
+  if (v.start) document.getElementById('modal-note').style.display = 'none';
+  overlay.classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+
+document.getElementById('modal-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
 // ── Arabic numerals ────────────────────────────────────────────────
 function toAr(n) {
   return String(n).replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
 }
 </script>
+
+<!-- ── Verse modal ── -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-ref-num" id="modal-ref-num"></div>
+      <button class="modal-close" onclick="closeModal()">&#x2715;</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-verse" id="modal-verse-body"></div>
+      <div class="modal-note" id="modal-note" style="display:none;font-size:12px;color:var(--muted);margin-top:10px;text-align:center;">
+        * نص بداية الآية غير متوفر في قاعدة البيانات — تظهر الخاتمة فقط
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
