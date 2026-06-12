@@ -3,555 +3,1004 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>تقسيم الميراث — سورة النساء آية ١١</title>
+<title>آيات الميراث — سورة النساء</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;400;600;700&display=swap');
 
-  :root {
-    --gold:    #C9A84C;
-    --gold-lt: #E8D08A;
-    --ink:     #1A1612;
-    --parchment: #F7F2E8;
-    --parchment-dk: #EDE5D0;
-    --teal:    #2A6B6B;
-    --teal-lt: #3D9B9B;
-    --red:     #8B2E2E;
-    --muted:   #6B6055;
-    --line:    #D4C49A;
-  }
+:root {
+  --gold:    #C9A84C;
+  --gold-lt: #E8D08A;
+  --gold-bg: #FDF6E3;
+  --ink:     #1A1612;
+  --parchment: #F7F2E8;
+  --parchment-dk: #EDE5D0;
+  --teal:    #2A6B6B;
+  --teal-lt: #3D9B9B;
+  --teal-bg: #E8F4F4;
+  --red:     #8B2E2E;
+  --red-bg:  #FBF0F0;
+  --purple:  #6B3B8B;
+  --purple-bg: #F3EEF8;
+  --muted:   #6B6055;
+  --line:    #D4C49A;
+}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-  body {
-    background: var(--parchment);
-    color: var(--ink);
-    font-family: 'Cairo', sans-serif;
-    min-height: 100vh;
-    padding: 0 0 60px;
-  }
+body {
+  background: var(--parchment);
+  color: var(--ink);
+  font-family: 'Cairo', sans-serif;
+  min-height: 100vh;
+}
 
-  /* ── Header ── */
-  header {
-    background: var(--teal);
-    padding: 36px 24px 28px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  header::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: repeating-linear-gradient(
-      45deg,
-      transparent, transparent 18px,
-      rgba(255,255,255,.04) 18px, rgba(255,255,255,.04) 19px
-    );
-  }
-  .ayah {
-    font-family: 'Amiri', serif;
-    font-size: clamp(18px, 4vw, 26px);
-    color: var(--gold-lt);
-    line-height: 2;
-    max-width: 760px;
-    margin: 0 auto 10px;
-    position: relative;
-    text-shadow: 0 1px 4px rgba(0,0,0,.4);
-  }
-  .ayah-ref {
-    font-family: 'Cairo', sans-serif;
-    font-size: 13px;
-    color: rgba(255,255,255,.6);
-    letter-spacing: .5px;
-  }
+/* ── Top Header ── */
+.site-header {
+  background: var(--teal);
+  padding: 28px 24px 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.site-header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(45deg,
+    transparent, transparent 18px,
+    rgba(255,255,255,.04) 18px, rgba(255,255,255,.04) 19px);
+}
+.site-title {
+  font-family: 'Amiri', serif;
+  font-size: clamp(22px, 5vw, 34px);
+  color: var(--gold-lt);
+  position: relative;
+  text-shadow: 0 1px 4px rgba(0,0,0,.4);
+}
+.site-sub {
+  font-size: 13px;
+  color: rgba(255,255,255,.6);
+  margin: 4px 0 20px;
+  letter-spacing: .5px;
+  position: relative;
+}
 
-  /* ── Main grid ── */
-  main {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 28px 16px 0;
-    display: grid;
-    gap: 24px;
-  }
+/* ── Sticky verse tabs ── */
+.verse-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  position: relative;
+  background: rgba(0,0,0,.2);
+  border-top: 1px solid rgba(255,255,255,.1);
+}
+.vtab {
+  padding: 12px 20px;
+  font-family: 'Cairo', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,.65);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all .2s;
+  white-space: nowrap;
+}
+.vtab:hover { color: var(--gold-lt); }
+.vtab.active {
+  color: var(--gold-lt);
+  border-bottom-color: var(--gold);
+  background: rgba(255,255,255,.06);
+}
 
-  /* ── Section card ── */
-  .card {
-    background: #fff;
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0,0,0,.06);
-  }
-  .card-head {
-    background: var(--teal);
-    color: #fff;
-    font-size: 15px;
-    font-weight: 700;
-    padding: 12px 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .card-head .icon { font-size: 20px; }
-  .card-body { padding: 20px; }
+/* Sticky nav */
+.sticky-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--teal);
+  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+}
 
-  /* ── Case rows ── */
-  .case-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 14px;
-  }
-  .case-row {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: center;
-    gap: 12px;
-    background: var(--parchment);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 14px 16px;
-    position: relative;
-  }
-  .case-label { font-size: 14px; font-weight: 600; color: var(--ink); }
-  .case-cond  { font-size: 12px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
+/* ── Section ── */
+.section { display: none; }
+.section.active { display: block; }
 
-  /* fraction badge */
-  .frac {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    font-family: 'Amiri', serif;
-    font-size: 17px;
-    font-weight: 700;
-    flex-shrink: 0;
-  }
-  .frac span { display: block; line-height: 1; }
-  .frac .num { border-bottom: 1.5px solid currentColor; padding-bottom: 2px; }
-  .frac .den { padding-top: 2px; }
-  .frac.gold  { background: #FDF6E3; color: var(--gold); border: 2px solid var(--gold); }
-  .frac.teal  { background: #E8F4F4; color: var(--teal); border: 2px solid var(--teal); }
-  .frac.red   { background: #FBF0F0; color: var(--red);  border: 2px solid var(--red); }
-  .frac.text-badge {
-    font-size: 11px;
-    font-family: 'Cairo', sans-serif;
-    font-weight: 700;
-    text-align: center;
-    line-height: 1.3;
-  }
+/* ── Verse banner ── */
+.verse-banner {
+  background: var(--teal);
+  padding: 24px;
+  text-align: center;
+}
+.verse-text {
+  font-family: 'Amiri', serif;
+  font-size: clamp(16px, 3.5vw, 23px);
+  color: var(--gold-lt);
+  line-height: 2.1;
+  max-width: 800px;
+  margin: 0 auto 10px;
+  text-shadow: 0 1px 3px rgba(0,0,0,.3);
+}
+.verse-ref {
+  font-size: 12px;
+  color: rgba(255,255,255,.55);
+}
 
-  /* ── Visual bar chart ── */
-  .bar-section { margin-top: 8px; }
-  .bar-row {
-    display: grid;
-    grid-template-columns: 130px 1fr 60px;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
-  }
-  .bar-label { font-size: 12px; font-weight: 600; text-align: right; color: var(--ink); }
-  .bar-track {
-    height: 26px;
-    background: var(--parchment-dk);
-    border-radius: 6px;
-    overflow: hidden;
-    position: relative;
-  }
-  .bar-fill {
-    height: 100%;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    font-weight: 700;
-    color: #fff;
-    transition: width .6s ease;
-    min-width: 30px;
-  }
-  .bar-val { font-size: 13px; font-weight: 700; color: var(--teal); }
+/* ── Main content ── */
+main {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 24px 16px 60px;
+  display: grid;
+  gap: 22px;
+}
 
-  /* ── Scenarios ── */
-  .scenario-tabs {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-bottom: 18px;
-  }
-  .tab-btn {
-    padding: 8px 16px;
-    border-radius: 20px;
-    border: 1.5px solid var(--line);
-    background: #fff;
-    font-family: 'Cairo', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--muted);
-    cursor: pointer;
-    transition: all .2s;
-  }
-  .tab-btn.active {
-    background: var(--teal);
-    color: #fff;
-    border-color: var(--teal);
-  }
+/* ── Card ── */
+.card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+}
+.card-head {
+  background: var(--teal);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.card-head.purple { background: var(--purple); }
+.card-head.gold-head { background: #7A6020; }
+.card-head .icon { font-size: 20px; }
+.card-body { padding: 20px; }
 
-  /* ── Pie chart ── */
-  .pie-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-  }
-  svg.pie { overflow: visible; }
-  .pie-legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px 20px;
-    justify-content: center;
-  }
-  .leg-item {
-    display: flex; align-items: center; gap: 6px;
-    font-size: 13px; font-weight: 600;
-  }
-  .leg-dot {
-    width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0;
-  }
+/* ── Case grid ── */
+.case-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+@media (min-width: 600px) { .case-grid { grid-template-columns: 1fr 1fr; } }
 
-  /* ── Key rules ── */
-  .rule-list { list-style: none; }
-  .rule-list li {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 12px 0;
-    border-bottom: 1px dashed var(--line);
-    font-size: 14px;
-    line-height: 1.7;
-  }
-  .rule-list li:last-child { border-bottom: none; }
-  .rule-icon {
-    width: 32px; height: 32px; border-radius: 50%;
-    background: var(--teal); color: #fff;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 15px; flex-shrink: 0; margin-top: 2px;
-  }
+.case-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 12px;
+  background: var(--parchment);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.case-label { font-size: 14px; font-weight: 600; }
+.case-cond  { font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
 
-  /* ── Note ── */
-  .note {
-    background: #FDF6E3;
-    border-right: 4px solid var(--gold);
-    border-radius: 8px;
-    padding: 14px 16px;
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.8;
-  }
+/* fraction badge */
+.frac {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  font-family: 'Amiri', serif;
+  font-size: 18px; font-weight: 700;
+  flex-shrink: 0;
+}
+.frac span { display: block; line-height: 1; }
+.frac .num { border-bottom: 1.5px solid currentColor; padding-bottom: 2px; }
+.frac .den { padding-top: 2px; }
+.frac.gold   { background: var(--gold-bg);   color: var(--gold);   border: 2px solid var(--gold); }
+.frac.teal   { background: var(--teal-bg);   color: var(--teal);   border: 2px solid var(--teal); }
+.frac.red    { background: var(--red-bg);    color: var(--red);    border: 2px solid var(--red); }
+.frac.purple { background: var(--purple-bg); color: var(--purple); border: 2px solid var(--purple); }
+.frac.text-badge { font-size: 11px; font-family: 'Cairo',sans-serif; font-weight: 700; text-align: center; line-height: 1.3; }
 
-  h2.section-title {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--teal);
-    margin-bottom: 14px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid var(--line);
-  }
+/* ── Bar chart ── */
+.bar-section { margin-top: 20px; }
+.bar-row {
+  display: grid;
+  grid-template-columns: 150px 1fr 70px;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+@media (max-width:500px) { .bar-row { grid-template-columns: 110px 1fr 55px; } }
+.bar-label { font-size: 12px; font-weight: 600; text-align: right; }
+.bar-track {
+  height: 26px;
+  background: var(--parchment-dk);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: #fff;
+  min-width: 28px;
+}
+.bar-val { font-size: 13px; font-weight: 700; color: var(--teal); }
 
-  @media (min-width: 600px) {
-    .case-grid { grid-template-columns: 1fr 1fr; }
-    .bar-row { grid-template-columns: 160px 1fr 70px; }
-  }
+/* ── Summary table ── */
+.sum-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-top: 8px;
+}
+.sum-table th {
+  background: var(--teal);
+  color: #fff;
+  padding: 9px 12px;
+  text-align: center;
+  font-weight: 700;
+}
+.sum-table td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--line);
+  text-align: center;
+  vertical-align: middle;
+}
+.sum-table tr:last-child td { border-bottom: none; }
+.sum-table tr:nth-child(even) td { background: var(--parchment); }
+.badge-frac {
+  display: inline-block;
+  background: var(--teal-bg);
+  color: var(--teal);
+  border: 1px solid var(--teal);
+  border-radius: 12px;
+  padding: 2px 10px;
+  font-family: 'Amiri', serif;
+  font-size: 15px;
+  font-weight: 700;
+}
+.badge-frac.gold { background: var(--gold-bg); color: var(--gold); border-color: var(--gold); }
+.badge-frac.purple { background: var(--purple-bg); color: var(--purple); border-color: var(--purple); }
+
+/* ── Scenario tabs ── */
+.scenario-tabs {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px;
+}
+.tab-btn {
+  padding: 7px 15px; border-radius: 20px;
+  border: 1.5px solid var(--line);
+  background: #fff;
+  font-family: 'Cairo', sans-serif; font-size: 13px; font-weight: 600;
+  color: var(--muted); cursor: pointer; transition: all .2s;
+}
+.tab-btn.active { background: var(--teal); color: #fff; border-color: var(--teal); }
+.tab-btn.purple-tab.active { background: var(--purple); border-color: var(--purple); }
+
+/* ── Pie ── */
+.pie-wrap { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+svg.pie { overflow: visible; }
+.pie-legend { display: flex; flex-wrap: wrap; gap: 8px 18px; justify-content: center; }
+.leg-item { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; }
+.leg-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── Rules list ── */
+.rule-list { list-style: none; }
+.rule-list li {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 0; border-bottom: 1px dashed var(--line);
+  font-size: 14px; line-height: 1.7;
+}
+.rule-list li:last-child { border-bottom: none; }
+.rule-icon {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--teal); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0; margin-top: 2px; font-weight: 700;
+}
+.rule-icon.purple { background: var(--purple); }
+.rule-icon.gold-icon { background: #7A6020; }
+
+/* ── Note / Intro box ── */
+.note {
+  background: var(--gold-bg);
+  border-right: 4px solid var(--gold);
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-size: 13px; color: var(--muted); line-height: 1.9;
+}
+.intro-box {
+  background: var(--teal-bg);
+  border-right: 4px solid var(--teal);
+  border-radius: 10px;
+  padding: 18px 20px;
+  font-size: 14px; line-height: 2; color: var(--ink);
+}
+.intro-box strong { color: var(--teal); }
+
+h2.section-title {
+  font-size: 15px; font-weight: 700; color: var(--teal);
+  margin-bottom: 14px; padding-bottom: 8px;
+  border-bottom: 2px solid var(--line);
+}
+h2.section-title.purple { color: var(--purple); border-color: var(--purple-bg); }
+.back-nav {
+  position: fixed; top: 14px; right: 16px; z-index: 9999;
+  display: flex; align-items: center;
+  background: rgba(42,107,107,.92);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(201,168,76,.4);
+  border-radius: 24px;
+  font-family: 'Cairo', sans-serif;
+  font-size: 13px; font-weight: 700;
+  box-shadow: 0 2px 12px rgba(0,0,0,.25);
+  overflow: hidden;
+}
+.back-nav button, .back-nav a {
+  display: flex; align-items: center; gap: 5px;
+  padding: 8px 13px;
+  color: #E8D08A; background: none; border: none;
+  text-decoration: none; cursor: pointer;
+  font-family: 'Cairo', sans-serif; font-size: 13px; font-weight: 700;
+  transition: background .18s, color .18s; white-space: nowrap;
+}
+.back-nav button:hover, .back-nav a:hover { background: rgba(201,168,76,.18); color: var(--gold-lt); }
+.back-nav .nav-sep { color: rgba(201,168,76,.35); padding: 0; user-select: none; }
 </style>
 </head>
 <body>
+<div class="back-nav">
+  <button onclick="history.length>1?history.back():window.location.href='index.html'">&#8592; رجوع</button>
+  <span class="nav-sep">|</span>
+  <a href="index.html">⌂ الرئيسية</a>
+</div>
 
-<header>
-  <p class="ayah">
-    ﴿ يُوصِيكُمُ ٱللَّهُ فِىٓ أَوۡلَٰدِكُمۡۖ لِلذَّكَرِ مِثۡلُ حَظِّ ٱلۡأُنثَيَيۡنِۚ
-    فَإِن كُنَّ نِسَآءً فَوۡقَ ٱثۡنَتَيۡنِ فَلَهُنَّ ثُلُثَا مَا تَرَكَۖ
-    وَإِن كَانَتۡ وَٰحِدَةً فَلَهَا ٱلنِّصۡفُۚ
-    وَلِأَبَوَيۡهِ لِكُلِّ وَٰحِدٍ مِّنۡهُمَا ٱلسُّدُسُ مِمَّا تَرَكَ إِن كَانَ لَهُۥ وَلَدٌۚ
-    فَإِن لَّمۡ يَكُن لَّهُۥ وَلَدٌ وَوَرِثَهُۥٓ أَبَوَاهُ فَلِأُمِّهِ ٱلثُّلُثُۚ
-    فَإِن كَانَ لَهُۥٓ إِخۡوَةٌ فَلِأُمِّهِ ٱلسُّدُسُ ﴾
-  </p>
-  <p class="ayah-ref">سورة النساء — الآية ١١</p>
-</header>
+<!-- ══ Site Header ══ -->
+<div class="site-header">
+  <div class="site-title">آيات الميراث — سورة النساء</div>
+  <div class="site-sub">الآيات ٧ · ١١ · ١٢ · ١٧٦</div>
+</div>
 
-<main>
+<!-- ══ Sticky Tabs ══ -->
+<div class="sticky-nav">
+  <div class="verse-tabs">
+    <button class="vtab active" onclick="showSection(0)">📖 آية ٧ — المبدأ</button>
+    <button class="vtab"        onclick="showSection(1)">👶 آية ١١ — الأولاد والآباء</button>
+    <button class="vtab"        onclick="showSection(2)">💍 آية ١٢ — الأزواج والإخوة لأم</button>
+    <button class="vtab"        onclick="showSection(3)">👥 آية ١٧٦ — الكلالة</button>
+  </div>
+</div>
 
-  <!-- ═══ الأولاد ═══ -->
-  <div class="card">
-    <div class="card-head"><span class="icon">👶</span> أولاً: نصيب الأولاد</div>
-    <div class="card-body">
-      <h2 class="section-title">الحالات</h2>
-      <div class="case-grid">
+<!-- ════════════════════════════════════════
+     SECTION 0 — آية ٧ : المبدأ
+═══════════════════════════════════════════ -->
+<div class="section active" id="sec-0">
+  <div class="verse-banner">
+    <div class="verse-text">
+      ﴿ لِّلرِّجَالِ نَصِيبٌ مِّمَّا تَرَكَ الْوَالِدَانِ وَالْأَقْرَبُونَ
+      وَلِلنِّسَاءِ نَصِيبٌ مِّمَّا تَرَكَ الْوَالِدَانِ وَالْأَقْرَبُونَ
+      مِمَّا قَلَّ مِنْهُ أَوْ كَثُرَ ۚ نَصِيبًا مَّفْرُوضًا ﴾
+    </div>
+    <div class="verse-ref">سورة النساء — الآية ٧</div>
+  </div>
+  <main>
+    <div class="intro-box">
+      قبل تفصيل الحصص في الآيات ١١ و١٢ و١٧٦، أرست الآية ٧ <strong>المبدأ الجوهري</strong>:
+      كل من الرجال والنساء له نصيب مقرر من الميراث — قليلاً كان أم كثيراً —
+      وهذا النصيب <strong>فريضة إلهية</strong> لا منّة من أحد ولا هِبة.
+      كانت العرب قبل الإسلام تحجب المرأة والطفل الصغير عن الإرث بحجة أنهما لا يقاتلان؛
+      فجاءت هذه الآية تقطع هذا العُرف.
+    </div>
 
-        <div class="case-row">
-          <div>
-            <div class="case-label">ذكر واحد أو أكثر + بنات</div>
-            <div class="case-cond">للذكر مثل حظ الأنثيين<br>يُقسَّم التركة بالتعصيب</div>
-          </div>
-          <div class="frac gold text-badge">للذكر<br>ضعف<br>البنت</div>
-        </div>
-
-        <div class="case-row">
-          <div>
-            <div class="case-label">بنتان فأكثر — بدون ذكر</div>
-            <div class="case-cond">فلهن ثلثا ما ترك<br>يُشرَكن فيه بالسوية</div>
-          </div>
-          <div class="frac teal"><span class="num">٢</span><span class="den">٣</span></div>
-        </div>
-
-        <div class="case-row">
-          <div>
-            <div class="case-label">بنت واحدة — بدون ذكر</div>
-            <div class="case-cond">فلها النصف فرضاً</div>
-          </div>
-          <div class="frac gold"><span class="num">١</span><span class="den">٢</span></div>
-        </div>
-
+    <div class="card">
+      <div class="card-head"><span class="icon">⚖️</span> ما أقرّته الآية</div>
+      <div class="card-body">
+        <ul class="rule-list">
+          <li>
+            <span class="rule-icon">١</span>
+            <span><strong>الميراث حق مفروض</strong> — "نَصِيبًا مَّفْرُوضًا" أي فُرض من الله ووجب، لا يجوز للورثة الاتفاق على إسقاطه.</span>
+          </li>
+          <li>
+            <span class="rule-icon">٢</span>
+            <span><strong>المرأة ترث</strong> — صرّحت الآية باسم النساء في مقابل الرجال؛ فالبنت والأم والزوجة والأخت كلهن وارثات.</span>
+          </li>
+          <li>
+            <span class="rule-icon">٣</span>
+            <span><strong>القليل والكثير سواء</strong> — حتى لو كانت التركة صغيرة فلكل وارثٍ نصيبه محفوظ.</span>
+          </li>
+          <li>
+            <span class="rule-icon">٤</span>
+            <span><strong>مصدر الاستحقاق</strong> — ما تركه الوالدان والأقربون، فيشمل الأبوين والإخوة والأزواج والأقارب المحددين في الآيات التالية.</span>
+          </li>
+        </ul>
       </div>
+    </div>
 
-      <!-- visual bars for bint cases -->
-      <div class="bar-section" style="margin-top:22px;">
-        <h2 class="section-title">مقارنة مرئية — نصيب البنات من التركة</h2>
-        <div class="bar-row">
-          <div class="bar-label">بنت واحدة</div>
-          <div class="bar-track">
-            <div class="bar-fill" style="width:50%;background:var(--gold);">١/٢</div>
+    <div class="note">
+      📌 تابع التفاصيل في الآيات التالية: <strong>آية ١١</strong> (الأولاد والآباء) ·
+      <strong>آية ١٢</strong> (الأزواج والإخوة لأم) · <strong>آية ١٧٦</strong> (الكلالة — الإخوة الأشقاء).
+    </div>
+  </main>
+</div>
+
+<!-- ════════════════════════════════════════
+     SECTION 1 — آية ١١ : الأولاد والآباء
+═══════════════════════════════════════════ -->
+<div class="section" id="sec-1">
+  <div class="verse-banner">
+    <div class="verse-text">
+      ﴿ يُوصِيكُمُ اللَّهُ فِي أَوْلَادِكُمْ ۖ لِلذَّكَرِ مِثْلُ حَظِّ الْأُنثَيَيْنِ ۚ
+      فَإِن كُنَّ نِسَاءً فَوْقَ اثْنَتَيْنِ فَلَهُنَّ ثُلُثَا مَا تَرَكَ ۖ
+      وَإِن كَانَتْ وَاحِدَةً فَلَهَا النِّصْفُ ۚ
+      وَلِأَبَوَيْهِ لِكُلِّ وَاحِدٍ مِّنْهُمَا السُّدُسُ مِمَّا تَرَكَ إِن كَانَ لَهُ وَلَدٌ ۚ
+      فَإِن لَّمْ يَكُن لَّهُ وَلَدٌ وَوَرِثَهُ أَبَوَاهُ فَلِأُمِّهِ الثُّلُثُ ۚ
+      فَإِن كَانَ لَهُ إِخْوَةٌ فَلِأُمِّهِ السُّدُسُ ﴾
+    </div>
+    <div class="verse-ref">سورة النساء — الآية ١١</div>
+  </div>
+  <main>
+
+    <!-- summary table -->
+    <div class="card">
+      <div class="card-head"><span class="icon">📋</span> جدول الحصص — آية ١١</div>
+      <div class="card-body">
+        <table class="sum-table">
+          <thead><tr><th>الوارث</th><th>الحالة</th><th>النصيب</th></tr></thead>
+          <tbody>
+            <tr><td>الأولاد ذكور وإناث</td><td>اجتمعوا</td><td>للذكر ضعف البنت (تعصيب)</td></tr>
+            <tr><td>البنات فقط (٢+)</td><td>لا ابن معهن</td><td><span class="badge-frac">٢/٣</span></td></tr>
+            <tr><td>بنت واحدة</td><td>لا ابن معها</td><td><span class="badge-frac gold">١/٢</span></td></tr>
+            <tr><td>الأب</td><td>مع وجود ولد</td><td><span class="badge-frac">١/٦</span></td></tr>
+            <tr><td>الأم</td><td>مع وجود ولد</td><td><span class="badge-frac">١/٦</span></td></tr>
+            <tr><td>الأم</td><td>لا ولد ولا إخوة</td><td><span class="badge-frac gold">١/٣</span></td></tr>
+            <tr><td>الأم</td><td>لا ولد + وجود إخوة</td><td><span class="badge-frac">١/٦</span> (حجب ناقص)</td></tr>
+            <tr><td>الأب</td><td>لا ولد</td><td>الباقي تعصيباً</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- الأولاد -->
+    <div class="card">
+      <div class="card-head"><span class="icon">👶</span> أولاً: نصيب الأولاد</div>
+      <div class="card-body">
+        <div class="case-grid">
+          <div class="case-row">
+            <div>
+              <div class="case-label">ذكور وبنات معاً</div>
+              <div class="case-cond">للذكر مثل حظ الأنثيين<br>يُقسَّم الباقي بالتعصيب</div>
+            </div>
+            <div class="frac teal text-badge">للذكر<br>ضعف<br>البنت</div>
           </div>
-          <div class="bar-val">50%</div>
+          <div class="case-row">
+            <div>
+              <div class="case-label">بنتان فأكثر — بلا ذكر</div>
+              <div class="case-cond">الثلثان بالسوية بينهن</div>
+            </div>
+            <div class="frac teal"><span class="num">٢</span><span class="den">٣</span></div>
+          </div>
+          <div class="case-row">
+            <div>
+              <div class="case-label">بنت واحدة — بلا ذكر</div>
+              <div class="case-cond">النصف فرضاً</div>
+            </div>
+            <div class="frac gold"><span class="num">١</span><span class="den">٢</span></div>
+          </div>
         </div>
-        <div class="bar-row">
-          <div class="bar-label">بنتان فأكثر</div>
-          <div class="bar-track">
-            <div class="bar-fill" style="width:66.6%;background:var(--teal);">٢/٣</div>
+        <div class="bar-section">
+          <h2 class="section-title">مقارنة مرئية — حصص البنات</h2>
+          <div class="bar-row">
+            <div class="bar-label">بنت واحدة</div>
+            <div class="bar-track"><div class="bar-fill" style="width:50%;background:var(--gold);">١/٢</div></div>
+            <div class="bar-val">50%</div>
           </div>
-          <div class="bar-val">66.6%</div>
-        </div>
-        <div class="bar-row">
-          <div class="bar-label">ذكر + بنت (مثال)</div>
-          <div class="bar-track">
-            <div class="bar-fill" style="width:33.3%;background:var(--red);border-radius:6px 0 0 6px;">البنت</div>
-            <div class="bar-fill" style="width:66.6%;background:var(--teal);border-radius:0 6px 6px 0;margin-top:-26px;margin-right:33.3%;">الذكر</div>
+          <div class="bar-row">
+            <div class="bar-label">بنتان فأكثر</div>
+            <div class="bar-track"><div class="bar-fill" style="width:66.6%;background:var(--teal);">٢/٣</div></div>
+            <div class="bar-val">66.6%</div>
           </div>
-          <div class="bar-val">100%</div>
+          <div class="bar-row">
+            <div class="bar-label">ابن + بنت</div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width:33.3%;background:var(--teal-lt);border-radius:6px 0 0 6px;">البنت ١</div>
+              <div class="bar-fill" style="width:66.6%;background:var(--teal);border-radius:0 6px 6px 0;margin-top:-26px;margin-right:33.3%;">الابن ٢</div>
+            </div>
+            <div class="bar-val">100%</div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- ═══ الأبوان ═══ -->
-  <div class="card">
-    <div class="card-head"><span class="icon">👨‍👩‍👦</span> ثانياً: نصيب الأبوين</div>
-    <div class="card-body">
-      <div class="case-grid">
-
-        <div class="case-row">
-          <div>
-            <div class="case-label">الأب — مع وجود ولد</div>
-            <div class="case-cond">السدس فرضاً</div>
+    <!-- الأبوان -->
+    <div class="card">
+      <div class="card-head"><span class="icon">👨‍👩‍👦</span> ثانياً: نصيب الأبوين</div>
+      <div class="card-body">
+        <div class="case-grid">
+          <div class="case-row">
+            <div>
+              <div class="case-label">الأب — مع وجود ولد</div>
+              <div class="case-cond">السدس فرضاً</div>
+            </div>
+            <div class="frac teal"><span class="num">١</span><span class="den">٦</span></div>
           </div>
-          <div class="frac teal"><span class="num">١</span><span class="den">٦</span></div>
-        </div>
-
-        <div class="case-row">
-          <div>
-            <div class="case-label">الأم — مع وجود ولد</div>
-            <div class="case-cond">السدس فرضاً</div>
+          <div class="case-row">
+            <div>
+              <div class="case-label">الأم — مع وجود ولد</div>
+              <div class="case-cond">السدس فرضاً</div>
+            </div>
+            <div class="frac teal"><span class="num">١</span><span class="den">٦</span></div>
           </div>
-          <div class="frac teal"><span class="num">١</span><span class="den">٦</span></div>
-        </div>
-
-        <div class="case-row">
-          <div>
-            <div class="case-label">الأم — بدون ولد ولا إخوة</div>
-            <div class="case-cond">الثلث فرضاً<br>(والباقي للأب)</div>
+          <div class="case-row">
+            <div>
+              <div class="case-label">الأم — لا ولد ولا إخوة</div>
+              <div class="case-cond">الثلث فرضاً<br>(والباقي للأب)</div>
+            </div>
+            <div class="frac gold"><span class="num">١</span><span class="den">٣</span></div>
           </div>
-          <div class="frac gold"><span class="num">١</span><span class="den">٣</span></div>
-        </div>
-
-        <div class="case-row">
-          <div>
-            <div class="case-label">الأم — بدون ولد + مع إخوة</div>
-            <div class="case-cond">السدس فرضاً<br>(حجب الإخوة للأم)</div>
+          <div class="case-row">
+            <div>
+              <div class="case-label">الأم — لا ولد + مع إخوة</div>
+              <div class="case-cond">السدس فرضاً<br>(حجب الإخوة للأم)</div>
+            </div>
+            <div class="frac red"><span class="num">١</span><span class="den">٦</span></div>
           </div>
-          <div class="frac red"><span class="num">١</span><span class="den">٦</span></div>
         </div>
-
       </div>
     </div>
-  </div>
 
-  <!-- ═══ سيناريوهات مرئية ═══ -->
-  <div class="card">
-    <div class="card-head"><span class="icon">📊</span> ثالثاً: سيناريوهات تفصيلية (دائرة التقسيم)</div>
-    <div class="card-body">
-
-      <div class="scenario-tabs">
-        <button class="tab-btn active" onclick="showScenario(0)">ابن + بنت + أب + أم</button>
-        <button class="tab-btn" onclick="showScenario(1)">بنتان + أب + أم</button>
-        <button class="tab-btn" onclick="showScenario(2)">بنت واحدة + أب + أم</button>
-        <button class="tab-btn" onclick="showScenario(3)">أب + أم فقط (لا ولد)</button>
+    <!-- سيناريوهات -->
+    <div class="card">
+      <div class="card-head"><span class="icon">📊</span> سيناريوهات تفصيلية</div>
+      <div class="card-body">
+        <div class="scenario-tabs">
+          <button class="tab-btn active" onclick="showPie('p11',0)">ابن+بنت+أب+أم</button>
+          <button class="tab-btn" onclick="showPie('p11',1)">بنتان+أب+أم</button>
+          <button class="tab-btn" onclick="showPie('p11',2)">بنت+أب+أم</button>
+          <button class="tab-btn" onclick="showPie('p11',3)">أب+أم فقط</button>
+        </div>
+        <div class="pie-wrap">
+          <svg class="pie" id="pie-p11" width="220" height="220" viewBox="-110 -110 220 220"></svg>
+          <div class="pie-legend" id="legend-p11"></div>
+          <p id="note-p11" style="font-size:13px;color:var(--muted);text-align:center;max-width:500px;line-height:1.9;margin-top:4px;"></p>
+        </div>
       </div>
+    </div>
 
-      <div class="pie-wrap">
-        <svg class="pie" id="pie" width="240" height="240" viewBox="-120 -120 240 240"></svg>
-        <div class="pie-legend" id="legend"></div>
-        <p id="scenario-note" style="font-size:13px;color:var(--muted);text-align:center;max-width:480px;line-height:1.8;"></p>
+    <!-- قواعد -->
+    <div class="card">
+      <div class="card-head"><span class="icon">⚖️</span> القواعد الجوهرية — آية ١١</div>
+      <div class="card-body">
+        <ul class="rule-list">
+          <li><span class="rule-icon">١</span><span><strong>للذكر مثل حظ الأنثيين</strong> — القاعدة الأساسية عند اجتماع الذكور والإناث.</span></li>
+          <li><span class="rule-icon">٢</span><span><strong>الولد يُقيِّد الأبوين بالسدس</strong> — لكل منهما ⅙ فقط مع وجود الولد.</span></li>
+          <li><span class="rule-icon">٣</span><span><strong>الإخوة يحجبون الأم عن الثلث</strong> — تنزل إلى ⅙ وإن لم يرثوا هم بسبب الأب.</span></li>
+          <li><span class="rule-icon">٤</span><span><strong>الفروض المذكورة</strong> — ½ · ⅔ · ⅓ · ⅙</span></li>
+        </ul>
       </div>
-
     </div>
-  </div>
 
-  <!-- ═══ قواعد جوهرية ═══ -->
-  <div class="card">
-    <div class="card-head"><span class="icon">⚖️</span> رابعاً: القواعد الجوهرية المستخلصة</div>
-    <div class="card-body">
-      <ul class="rule-list">
-        <li>
-          <span class="rule-icon">١</span>
-          <span><strong>للذكر مثل حظ الأنثيين</strong> — القاعدة الأساسية في تعصيب الأولاد؛ الابن يرث ضعف البنت عند اجتماعهم.</span>
-        </li>
-        <li>
-          <span class="rule-icon">٢</span>
-          <span><strong>الولد يحجب الأبوين</strong> — عند وجود ولد يُقيَّد نصيب كل من الأب والأم بالسدس فرضاً.</span>
-        </li>
-        <li>
-          <span class="rule-icon">٣</span>
-          <span><strong>الإخوة يحجبون الأم عن الثلث</strong> — تنزل من الثلث إلى السدس إذا كان للميت إخوة، حتى لو لم يرثوا هم أنفسهم.</span>
-        </li>
-        <li>
-          <span class="rule-icon">٤</span>
-          <span><strong>الفروض المذكورة في الآية</strong> — النصف ½ · الثلثان ⅔ · الثلث ⅓ · السدس ⅙</span>
-        </li>
-        <li>
-          <span class="rule-icon">٥</span>
-          <span><strong>الباقي بعد الفروض</strong> — يؤول للعصبة (الذكور من جهة الأب) وقد يعود على أصحاب الفروض بالرد.</span>
-        </li>
-      </ul>
+  </main>
+</div>
+
+<!-- ════════════════════════════════════════
+     SECTION 2 — آية ١٢ : الأزواج والإخوة لأم
+═══════════════════════════════════════════ -->
+<div class="section" id="sec-2">
+  <div class="verse-banner">
+    <div class="verse-text">
+      ﴿ وَلَكُمْ نِصْفُ مَا تَرَكَ أَزْوَاجُكُمْ إِن لَّمْ يَكُن لَّهُنَّ وَلَدٌ ۚ
+      فَإِن كَانَ لَهُنَّ وَلَدٌ فَلَكُمُ الرُّبُعُ مِمَّا تَرَكْنَ ۚ
+      وَلَهُنَّ الرُّبُعُ مِمَّا تَرَكْتُمْ إِن لَّمْ يَكُن لَّكُمْ وَلَدٌ ۚ
+      فَإِن كَانَ لَكُمْ وَلَدٌ فَلَهُنَّ الثُّمُنُ مِمَّا تَرَكْتُم ۚ
+      وَإِن كَانَ رَجُلٌ يُورَثُ كَلَالَةً أَوِ امْرَأَةٌ وَلَهُ أَخٌ أَوْ أُخْتٌ
+      فَلِكُلِّ وَاحِدٍ مِّنْهُمَا السُّدُسُ ۚ
+      فَإِن كَانُوا أَكْثَرَ مِن ذَٰلِكَ فَهُمْ شُرَكَاءُ فِي الثُّلُثِ ﴾
     </div>
+    <div class="verse-ref">سورة النساء — الآية ١٢</div>
   </div>
+  <main>
 
-  <div class="note">
-    ⚠️ <strong>تنبيه:</strong> هذا الرسم التوضيحي يغطي ما ورد صراحةً في الآية الكريمة ١١ من سورة النساء.
-    علم الفرائض كامل يشمل بقية الآيات (١٢، ١٧٦) والسنة النبوية واجتهادات الفقهاء.
-    للمسائل العملية يُرجع إلى عالم متخصص أو قسم الشؤون الدينية.
+    <!-- summary table -->
+    <div class="card">
+      <div class="card-head"><span class="icon">📋</span> جدول الحصص — آية ١٢</div>
+      <div class="card-body">
+        <table class="sum-table">
+          <thead><tr><th>الوارث</th><th>الحالة</th><th>النصيب</th></tr></thead>
+          <tbody>
+            <tr><td>الزوج</td><td>زوجته بلا ولد</td><td><span class="badge-frac gold">١/٢</span></td></tr>
+            <tr><td>الزوج</td><td>زوجته لها ولد</td><td><span class="badge-frac">١/٤</span></td></tr>
+            <tr><td>الزوجة (أو الزوجات)</td><td>زوجها بلا ولد</td><td><span class="badge-frac">١/٤</span></td></tr>
+            <tr><td>الزوجة (أو الزوجات)</td><td>زوجها له ولد</td><td><span class="badge-frac purple">١/٨</span></td></tr>
+            <tr><td>أخ أو أخت لأم (واحد)</td><td>الميت كلالة</td><td><span class="badge-frac">١/٦</span></td></tr>
+            <tr><td>إخوة لأم (٢ فأكثر)</td><td>الميت كلالة</td><td><span class="badge-frac gold">١/٣</span> يشتركون</td></tr>
+          </tbody>
+        </table>
+        <div class="note" style="margin-top:14px;">
+          📌 <strong>الكلالة هنا:</strong> المقصود في آية ١٢ هو من لا ولد له (مع وجود الأب أو غيابه).
+          أما الكلالة في آية ١٧٦ فهي من لا ولد له <em>ولا والد</em> — وتلك لإخوته الأشقاء.
+        </div>
+      </div>
+    </div>
+
+    <!-- الأزواج -->
+    <div class="card">
+      <div class="card-head"><span class="icon">💍</span> أولاً: نصيب الأزواج</div>
+      <div class="card-body">
+        <h2 class="section-title">الزوج من زوجته</h2>
+        <div class="case-grid">
+          <div class="case-row">
+            <div>
+              <div class="case-label">الزوجة بلا ولد</div>
+              <div class="case-cond">يرث الزوج النصف</div>
+            </div>
+            <div class="frac gold"><span class="num">١</span><span class="den">٢</span></div>
+          </div>
+          <div class="case-row">
+            <div>
+              <div class="case-label">الزوجة لها ولد</div>
+              <div class="case-cond">يرث الزوج الربع<br>(الولد يحجب عن النصف)</div>
+            </div>
+            <div class="frac teal"><span class="num">١</span><span class="den">٤</span></div>
+          </div>
+        </div>
+
+        <h2 class="section-title" style="margin-top:20px;">الزوجة من زوجها</h2>
+        <div class="case-grid">
+          <div class="case-row">
+            <div>
+              <div class="case-label">الزوج بلا ولد</div>
+              <div class="case-cond">ترث الزوجة الربع<br>(يُقسَّم بين الزوجات إن تعددن)</div>
+            </div>
+            <div class="frac teal"><span class="num">١</span><span class="den">٤</span></div>
+          </div>
+          <div class="case-row">
+            <div>
+              <div class="case-label">الزوج له ولد</div>
+              <div class="case-cond">ترث الزوجة الثمن<br>(يُقسَّم بين الزوجات إن تعددن)</div>
+            </div>
+            <div class="frac purple"><span class="num">١</span><span class="den">٨</span></div>
+          </div>
+        </div>
+
+        <div class="bar-section">
+          <h2 class="section-title">مقارنة بصرية — أثر الولد على نصيب الزوج والزوجة</h2>
+          <div class="bar-row">
+            <div class="bar-label">زوج — لا ولد</div>
+            <div class="bar-track"><div class="bar-fill" style="width:50%;background:var(--gold);">١/٢</div></div>
+            <div class="bar-val">50%</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">زوج — مع ولد</div>
+            <div class="bar-track"><div class="bar-fill" style="width:25%;background:var(--teal);">١/٤</div></div>
+            <div class="bar-val">25%</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">زوجة — لا ولد</div>
+            <div class="bar-track"><div class="bar-fill" style="width:25%;background:var(--teal-lt);">١/٤</div></div>
+            <div class="bar-val">25%</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">زوجة — مع ولد</div>
+            <div class="bar-track"><div class="bar-fill" style="width:12.5%;background:var(--purple);">١/٨</div></div>
+            <div class="bar-val">12.5%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- الإخوة لأم -->
+    <div class="card">
+      <div class="card-head purple"><span class="icon">🤝</span> ثانياً: الإخوة لأم (الكلالة في آية ١٢)</div>
+      <div class="card-body">
+        <div class="note" style="margin-bottom:16px;">
+          الإخوة المقصودون هنا هم <strong>الإخوة من الأم فقط</strong> (أبوهم مختلف)،
+          وشرط ميراثهم أن يكون الميت <strong>كلالة</strong>: أي لا ولد له في هذا السياق.
+        </div>
+        <div class="case-grid">
+          <div class="case-row">
+            <div>
+              <div class="case-label">أخ واحد أو أخت واحدة لأم</div>
+              <div class="case-cond">السدس فرضاً</div>
+            </div>
+            <div class="frac teal"><span class="num">١</span><span class="den">٦</span></div>
+          </div>
+          <div class="case-row">
+            <div>
+              <div class="case-label">إخوة لأم (٢ فأكثر)</div>
+              <div class="case-cond">الثلث يشتركون فيه بالسوية<br>(الذكر والأنثى سواء هنا)</div>
+            </div>
+            <div class="frac gold"><span class="num">١</span><span class="den">٣</span></div>
+          </div>
+        </div>
+        <div class="note" style="margin-top:14px;">
+          ⚠️ <strong>تمييز مهم:</strong> في ميراث الإخوة لأم الذكر والأنثى يتساويان (على خلاف القاعدة العامة)،
+          لأن صلتهم بالميت هي الأم لا الأب.
+        </div>
+      </div>
+    </div>
+
+    <!-- سيناريوهات الأزواج -->
+    <div class="card">
+      <div class="card-head"><span class="icon">📊</span> سيناريوهات — آية ١٢</div>
+      <div class="card-body">
+        <div class="scenario-tabs">
+          <button class="tab-btn active" onclick="showPie('p12',0)">زوج + بنت + أب + أم</button>
+          <button class="tab-btn" onclick="showPie('p12',1)">زوج + لا ولد + أب + أم</button>
+          <button class="tab-btn" onclick="showPie('p12',2)">زوجة + ابن + أب + أم</button>
+          <button class="tab-btn" onclick="showPie('p12',3)">زوجة + لا ولد + أم</button>
+        </div>
+        <div class="pie-wrap">
+          <svg class="pie" id="pie-p12" width="220" height="220" viewBox="-110 -110 220 220"></svg>
+          <div class="pie-legend" id="legend-p12"></div>
+          <p id="note-p12" style="font-size:13px;color:var(--muted);text-align:center;max-width:500px;line-height:1.9;margin-top:4px;"></p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ════════════════════════════════════════
+     SECTION 3 — آية ١٧٦ : الكلالة
+═══════════════════════════════════════════ -->
+<div class="section" id="sec-3">
+  <div class="verse-banner">
+    <div class="verse-text">
+      ﴿ يَسْتَفْتُونَكَ قُلِ اللَّهُ يُفْتِيكُمْ فِي الْكَلَالَةِ ۚ
+      إِنِ امْرُؤٌ هَلَكَ لَيْسَ لَهُ وَلَدٌ وَلَهُ أُخْتٌ فَلَهَا نِصْفُ مَا تَرَكَ ۚ
+      وَهُوَ يَرِثُهَا إِن لَّمْ يَكُن لَّهَا وَلَدٌ ۚ
+      فَإِن كَانَتَا اثْنَتَيْنِ فَلَهُمَا الثُّلُثَانِ مِمَّا تَرَكَ ۚ
+      وَإِن كَانُوا إِخْوَةً رِّجَالًا وَنِسَاءً فَلِلذَّكَرِ مِثْلُ حَظِّ الْأُنثَيَيْنِ ۗ
+      وَاللَّهُ بِكُلِّ شَيْءٍ عَلِيمٌ ﴾
+    </div>
+    <div class="verse-ref">سورة النساء — الآية ١٧٦ (آخر آية في السورة)</div>
   </div>
+  <main>
 
-</main>
+    <div class="intro-box">
+      <strong>الكلالة:</strong> من مات وليس له ولد (ابن أو بنت) وليس له والد (أب).
+      فوارثه في هذه الحالة هم <strong>إخوته وأخواته الأشقاء</strong> (أو لأب).
+      هذه الآية جاءت آخر ما نزل من القرآن في أحكام الميراث — "آخر آية في السورة وآخر ما نزل".
+    </div>
+
+    <!-- summary table -->
+    <div class="card">
+      <div class="card-head gold-head"><span class="icon">📋</span> جدول الحصص — الكلالة (آية ١٧٦)</div>
+      <div class="card-body">
+        <table class="sum-table">
+          <thead><tr><th>الوارث</th><th>الحالة</th><th>النصيب</th></tr></thead>
+          <tbody>
+            <tr><td>أخت شقيقة واحدة (أو لأب)</td><td>الميت لا ولد له ولا والد</td><td><span class="badge-frac gold">١/٢</span></td></tr>
+            <tr><td>أختان شقيقتان (أو لأب)</td><td>الميت لا ولد له ولا والد</td><td><span class="badge-frac">٢/٣</span></td></tr>
+            <tr><td>إخوة وأخوات أشقاء</td><td>اجتمعوا</td><td>للذكر ضعف الأنثى</td></tr>
+            <tr><td>أخ شقيق واحد</td><td>لا ولد ولا والد للميت</td><td>كل التركة (تعصيب)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- الحالات -->
+    <div class="card">
+      <div class="card-head gold-head"><span class="icon">👥</span> حالات الكلالة</div>
+      <div class="card-body">
+        <div class="case-grid">
+          <div class="case-row">
+            <div>
+              <div class="case-label">أخت واحدة (شقيقة أو لأب)</div>
+              <div class="case-cond">لا ولد للميت ولا والد<br>وليس معها أخ</div>
+            </div>
+            <div class="frac gold"><span class="num">١</span><span class="den">٢</span></div>
+          </div>
+          <div class="case-row">
+            <div>
+              <div class="case-label">أختان فأكثر</div>
+              <div class="case-cond">يشتركن في الثلثين<br>بالسوية بينهن</div>
+            </div>
+            <div class="frac teal"><span class="num">٢</span><span class="den">٣</span></div>
+          </div>
+          <div class="case-row">
+            <div>
+              <div class="case-label">إخوة وأخوات معاً</div>
+              <div class="case-cond">للذكر مثل حظ الأنثيين<br>يقتسمون كالأولاد</div>
+            </div>
+            <div class="frac teal text-badge">ذكر<br>ضعف<br>أنثى</div>
+          </div>
+          <div class="case-row">
+            <div>
+              <div class="case-label">أخ واحد (لا أخت)</div>
+              <div class="case-cond">يرث كل التركة<br>بالتعصيب</div>
+            </div>
+            <div class="frac gold text-badge">كل<br>التركة</div>
+          </div>
+        </div>
+
+        <div class="bar-section">
+          <h2 class="section-title">مقارنة بصرية</h2>
+          <div class="bar-row">
+            <div class="bar-label">أخت واحدة</div>
+            <div class="bar-track"><div class="bar-fill" style="width:50%;background:var(--gold);">١/٢</div></div>
+            <div class="bar-val">50%</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">أختان فأكثر</div>
+            <div class="bar-track"><div class="bar-fill" style="width:66.6%;background:var(--teal);">٢/٣</div></div>
+            <div class="bar-val">66.6%</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">أخ واحد</div>
+            <div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--teal);">كل التركة</div></div>
+            <div class="bar-val">100%</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">أخ + أخت</div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width:33.3%;background:var(--teal-lt);border-radius:6px 0 0 6px;">الأخت</div>
+              <div class="bar-fill" style="width:66.6%;background:var(--teal);border-radius:0 6px 6px 0;margin-top:-26px;margin-right:33.3%;">الأخ</div>
+            </div>
+            <div class="bar-val">100%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- سيناريوهات الكلالة -->
+    <div class="card">
+      <div class="card-head gold-head"><span class="icon">📊</span> سيناريوهات — الكلالة</div>
+      <div class="card-body">
+        <div class="scenario-tabs">
+          <button class="tab-btn active" onclick="showPie('p176',0)">أخت واحدة + زوجة</button>
+          <button class="tab-btn" onclick="showPie('p176',1)">أختان + زوج</button>
+          <button class="tab-btn" onclick="showPie('p176',2)">أخ + أختان</button>
+          <button class="tab-btn" onclick="showPie('p176',3)">أخ واحد فقط</button>
+        </div>
+        <div class="pie-wrap">
+          <svg class="pie" id="pie-p176" width="220" height="220" viewBox="-110 -110 220 220"></svg>
+          <div class="pie-legend" id="legend-p176"></div>
+          <p id="note-p176" style="font-size:13px;color:var(--muted);text-align:center;max-width:500px;line-height:1.9;margin-top:4px;"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- قواعد -->
+    <div class="card">
+      <div class="card-head gold-head"><span class="icon">⚖️</span> القواعد الجوهرية — الكلالة</div>
+      <div class="card-body">
+        <ul class="rule-list">
+          <li>
+            <span class="rule-icon gold-icon">١</span>
+            <span><strong>شرط الكلالة:</strong> أن لا يكون للميت ولد (ذكر أو أنثى) ولا والد — وإلا كان للأب التعصيب قبل الإخوة.</span>
+          </li>
+          <li>
+            <span class="rule-icon gold-icon">٢</span>
+            <span><strong>الأخت تأخذ ½ والأختان ⅔</strong> — نفس أحكام البنات في آية ١١ تماماً.</span>
+          </li>
+          <li>
+            <span class="rule-icon gold-icon">٣</span>
+            <span><strong>للذكر مثل حظ الأنثيين</strong> — عند اجتماع الإخوة والأخوات تُطبَّق القاعدة العامة.</span>
+          </li>
+          <li>
+            <span class="rule-icon gold-icon">٤</span>
+            <span><strong>الأخ يرث أخته بالتعصيب</strong> — "وَهُوَ يَرِثُهَا إِن لَّمْ يَكُن لَهَا وَلَدٌ".</span>
+          </li>
+          <li>
+            <span class="rule-icon gold-icon">٥</span>
+            <span><strong>الفرق بين الكلالتين:</strong> كلالة آية ١٢ = لا ولد (لأم) · كلالة آية ١٧٦ = لا ولد ولا والد (لأشقاء).</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note">
+      ⚠️ <strong>تنبيه:</strong> هذه الصفحة تشرح ما ورد في آيات الميراث الأربع في سورة النساء.
+      علم الفرائض الكامل يشمل السنة النبوية (ميراث الجد، العَوْل، الرَّد، ذوو الأرحام) واجتهادات الفقهاء.
+      للمسائل العملية يُرجع إلى عالم متخصص.
+    </div>
+  </main>
+</div>
 
 <script>
-const SCENARIOS = [
-  {
-    label: "ابن + بنت + أب + أم",
-    note: "الأصل من 12 سهماً: الأب ⅙ = 2، الأم ⅙ = 2، الابن والبنت يأخذان الباقي (8 سهماً) للذكر مثل حظ الأنثيين → ابن 5.33 (⅔ من 8) بنت 2.67 (⅓ من 8). نُقرِّبها على أصل 12.",
-    slices: [
-      { label:"الابن", pct: 44.4, color:"#2A6B6B" },
-      { label:"البنت", pct: 22.2, color:"#3D9B9B" },
-      { label:"الأب", pct: 16.7, color:"#C9A84C" },
-      { label:"الأم", pct: 16.7, color:"#E8D08A" },
-    ]
-  },
-  {
-    label: "بنتان + أب + أم",
-    note: "الأب ⅙، الأم ⅙، البنتان ⅔ بالسوية بينهما. المجموع = ⅙ + ⅙ + ⅔ = 1 (التركة كاملة).",
-    slices: [
-      { label:"البنت الأولى", pct: 33.3, color:"#2A6B6B" },
-      { label:"البنت الثانية", pct: 33.3, color:"#3D9B9B" },
-      { label:"الأب", pct: 16.7, color:"#C9A84C" },
-      { label:"الأم", pct: 16.7, color:"#E8D08A" },
-    ]
-  },
-  {
-    label: "بنت واحدة + أب + أم",
-    note: "البنت ½، الأم ⅙، الأب ⅙ + يأخذ الباقي بالتعصيب = ⅙ + ⅙ = ⅓. المجموع = ½ + ⅙ + ⅓ = 1.",
-    slices: [
-      { label:"البنت", pct: 50, color:"#2A6B6B" },
-      { label:"الأب", pct: 33.3, color:"#C9A84C" },
-      { label:"الأم", pct: 16.7, color:"#E8D08A" },
-    ]
-  },
-  {
-    label: "أب + أم فقط (لا ولد)",
-    note: "لا ولد ولا إخوة: الأم ⅓، الأب يأخذ الباقي ⅔ (تعصيب). إن كان له إخوة: الأم ⅙ والأب ⅚.",
-    slices: [
-      { label:"الأب", pct: 66.7, color:"#C9A84C" },
-      { label:"الأم", pct: 33.3, color:"#E8D08A" },
-    ]
-  },
-];
-
-let activeIdx = 0;
-
-function polarToXY(angle, r) {
-  const rad = (angle - 90) * Math.PI / 180;
-  return { x: r * Math.cos(rad), y: r * Math.sin(rad) };
+// ─── Section navigation ────────────────────────────────────────────
+function showSection(idx) {
+  document.querySelectorAll('.section').forEach((s,i) => s.classList.toggle('active', i===idx));
+  document.querySelectorAll('.vtab').forEach((t,i) => t.classList.toggle('active', i===idx));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  // init pie for that section on first show
+  if (idx === 1 && !window._p11init) { window._p11init=true; showPie('p11', 0); }
+  if (idx === 2 && !window._p12init) { window._p12init=true; showPie('p12', 0); }
+  if (idx === 3 && !window._p176init){ window._p176init=true; showPie('p176',0); }
 }
 
-function describeArc(startAngle, endAngle, r) {
-  const s = polarToXY(startAngle, r);
-  const e = polarToXY(endAngle, r);
-  const large = endAngle - startAngle > 180 ? 1 : 0;
-  return `M 0 0 L ${s.x} ${s.y} A ${r} ${r} 0 ${large} 1 ${e.x} ${e.y} Z`;
-}
+// ─── Pie chart engine ──────────────────────────────────────────────
+const PIES = {
+  p11: [
+    { label:"ابن+بنت+أب+أم", note:"الأصل من ١٢: الأب ⅙=٢، الأم ⅙=٢، الباقي ٨ للأولاد للذكر ضعف → ابن ≈٥.٣ سهم، بنت ≈٢.٧ سهم.",
+      slices:[{l:"الابن",p:44.4,c:"#2A6B6B"},{l:"البنت",p:22.2,c:"#3D9B9B"},{l:"الأب",p:16.7,c:"#C9A84C"},{l:"الأم",p:16.7,c:"#E8D08A"}] },
+    { label:"بنتان+أب+أم", note:"البنتان ⅔، الأب ⅙، الأم ⅙ — المجموع = ١.",
+      slices:[{l:"البنت الأولى",p:33.3,c:"#2A6B6B"},{l:"البنت الثانية",p:33.3,c:"#3D9B9B"},{l:"الأب",p:16.7,c:"#C9A84C"},{l:"الأم",p:16.7,c:"#E8D08A"}] },
+    { label:"بنت+أب+أم", note:"البنت ½، الأم ⅙، الأب ⅙ فرضاً + الباقي تعصيباً = ⅓.",
+      slices:[{l:"البنت",p:50,c:"#2A6B6B"},{l:"الأب",p:33.3,c:"#C9A84C"},{l:"الأم",p:16.7,c:"#E8D08A"}] },
+    { label:"أب+أم فقط", note:"لا ولد ولا إخوة: الأم ⅓، الأب ⅔. لو كان له إخوة: الأم ⅙ والأب ⅚.",
+      slices:[{l:"الأب",p:66.7,c:"#C9A84C"},{l:"الأم",p:33.3,c:"#E8D08A"}] },
+  ],
+  p12: [
+    { label:"زوج+بنت+أب+أم", note:"الزوج ¼ (لوجود الولد)، البنت ½، الأب ⅙، الأم ⅙ — المجموع = ١.",
+      slices:[{l:"الزوج",p:25,c:"#6B3B8B"},{l:"البنت",p:50,c:"#2A6B6B"},{l:"الأب",p:12.5,c:"#C9A84C"},{l:"الأم",p:12.5,c:"#E8D08A"}] },
+    { label:"زوج+لا ولد+أب+أم", note:"الزوج ½ (لا ولد)، الأم ⅙، الأب ⅙ + الباقي تعصيباً = ⅓.",
+      slices:[{l:"الزوج",p:50,c:"#6B3B8B"},{l:"الأب",p:33.3,c:"#C9A84C"},{l:"الأم",p:16.7,c:"#E8D08A"}] },
+    { label:"زوجة+ابن+أب+أم", note:"الزوجة ⅛ (لوجود الولد)، الأب ⅙، الأم ⅙، الابن يأخذ الباقي تعصيباً = ⅝ - ⅙ = ≈٥٤%.",
+      slices:[{l:"الزوجة",p:12.5,c:"#6B3B8B"},{l:"الابن",p:54.2,c:"#2A6B6B"},{l:"الأب",p:16.7,c:"#C9A84C"},{l:"الأم",p:16.6,c:"#E8D08A"}] },
+    { label:"زوجة+لا ولد+أم", note:"الزوجة ¼ (لا ولد)، الأم ⅓ (لا ولد ولا إخوة)، الباقي للعصبة أو يُرَد.",
+      slices:[{l:"الزوجة",p:25,c:"#6B3B8B"},{l:"الأم",p:33.3,c:"#E8D08A"},{l:"الباقي (رد/عصبة)",p:41.7,c:"#aaa"}] },
+  ],
+  p176: [
+    { label:"أخت واحدة+زوجة", note:"الزوجة ¼ (لا ولد)، الأخت الشقيقة ½، الباقي ¼ للعصبة أو يُرَد على الأخت.",
+      slices:[{l:"الزوجة",p:25,c:"#6B3B8B"},{l:"الأخت",p:50,c:"#C9A84C"},{l:"الباقي",p:25,c:"#aaa"}] },
+    { label:"أختان+زوج", note:"الزوج ½ (لا ولد)، الأختان ⅔ → العَوْل: نقسم على ٧ أسهم → الزوج ٣، الأختان ٤.",
+      slices:[{l:"الزوج",p:42.9,c:"#2A6B6B"},{l:"الأخت الأولى",p:28.6,c:"#C9A84C"},{l:"الأخت الثانية",p:28.5,c:"#E8D08A"}] },
+    { label:"أخ+أختان", note:"للذكر مثل حظ الأنثيين: الأخ ٢ سهم، كل أخت سهم → الأخ ٥٠%، كل أخت ٢٥%.",
+      slices:[{l:"الأخ",p:50,c:"#2A6B6B"},{l:"الأخت الأولى",p:25,c:"#C9A84C"},{l:"الأخت الثانية",p:25,c:"#E8D08A"}] },
+    { label:"أخ واحد فقط", note:"لا ولد للميت ولا والد — الأخ الشقيق يرث كل التركة بالتعصيب.",
+      slices:[{l:"الأخ الشقيق",p:100,c:"#2A6B6B"}] },
+  ],
+};
 
-function drawPie(idx) {
-  const sc = SCENARIOS[idx];
-  const svg = document.getElementById('pie');
-  const legend = document.getElementById('legend');
-  svg.innerHTML = '';
-  legend.innerHTML = '';
-  document.getElementById('scenario-note').textContent = sc.note;
+const pieStates = { p11:0, p12:0, p176:0 };
+
+function showPie(id, idx) {
+  pieStates[id] = idx;
+  const data = PIES[id][idx];
+  const svg = document.getElementById('pie-'+id);
+  const leg = document.getElementById('legend-'+id);
+  const noteEl = document.getElementById('note-'+id);
+  svg.innerHTML = ''; leg.innerHTML = '';
+  noteEl.textContent = data.note;
+
+  // update tab buttons in same card
+  const card = svg.closest('.card');
+  card.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
 
   let start = 0;
-  sc.slices.forEach(sl => {
-    const deg = sl.pct / 100 * 360;
+  data.slices.forEach(sl => {
+    const deg = sl.p / 100 * 360;
     const end = start + deg;
-    const mid = start + deg / 2;
     const path = document.createElementNS('http://www.w3.org/2000/svg','path');
-    path.setAttribute('d', describeArc(start, end, 108));
-    path.setAttribute('fill', sl.color);
-    path.setAttribute('stroke', '#fff');
-    path.setAttribute('stroke-width', '2');
+    path.setAttribute('d', arc(start, end, 100));
+    path.setAttribute('fill', sl.c);
+    path.setAttribute('stroke','#fff');
+    path.setAttribute('stroke-width','2');
     svg.appendChild(path);
 
-    // label line
-    const lp = polarToXY(mid, 75);
-    const lp2 = polarToXY(mid, 118);
-    const tx = polarToXY(mid, 130);
-
-    const text = document.createElementNS('http://www.w3.org/2000/svg','text');
-    text.setAttribute('x', lp.x);
-    text.setAttribute('y', lp.y);
-    text.setAttribute('text-anchor','middle');
-    text.setAttribute('dominant-baseline','middle');
-    text.setAttribute('fill','#fff');
-    text.setAttribute('font-size','11');
-    text.setAttribute('font-family','Cairo, sans-serif');
-    text.setAttribute('font-weight','700');
-    text.textContent = sl.pct.toFixed(1) + '%';
-    svg.appendChild(text);
-
-    // legend
+    const mid = start + deg/2;
+    if (sl.p > 5) {
+      const lp = polar(mid, 65);
+      const txt = document.createElementNS('http://www.w3.org/2000/svg','text');
+      txt.setAttribute('x', lp.x); txt.setAttribute('y', lp.y);
+      txt.setAttribute('text-anchor','middle');
+      txt.setAttribute('dominant-baseline','middle');
+      txt.setAttribute('fill','#fff');
+      txt.setAttribute('font-size','11');
+      txt.setAttribute('font-family','Cairo,sans-serif');
+      txt.setAttribute('font-weight','700');
+      txt.textContent = sl.p.toFixed(1)+'%';
+      svg.appendChild(txt);
+    }
     const li = document.createElement('div');
     li.className = 'leg-item';
-    li.innerHTML = `<span class="leg-dot" style="background:${sl.color}"></span>${sl.label} (${sl.pct.toFixed(1)}%)`;
-    legend.appendChild(li);
-
+    li.innerHTML = `<span class="leg-dot" style="background:${sl.c}"></span>${sl.l} (${sl.p.toFixed(1)}%)`;
+    leg.appendChild(li);
     start = end;
   });
 }
 
-function showScenario(idx) {
-  activeIdx = idx;
-  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', i===idx));
-  drawPie(idx);
+function polar(a, r) {
+  const rad = (a-90)*Math.PI/180;
+  return { x: r*Math.cos(rad), y: r*Math.sin(rad) };
+}
+function arc(s, e, r) {
+  const a = polar(s,r), b = polar(e,r);
+  const large = e-s > 180 ? 1 : 0;
+  return `M 0 0 L ${a.x} ${a.y} A ${r} ${r} 0 ${large} 1 ${b.x} ${b.y} Z`;
 }
 
-drawPie(0);
+// init first section pie
+showPie('p11', 0);
 </script>
 </body>
 </html>

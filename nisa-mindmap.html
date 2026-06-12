@@ -250,9 +250,36 @@ header {
   50%      { box-shadow: 0 0 40px rgba(212,168,71,.55), inset 0 0 25px rgba(212,168,71,.12); }
 }
 .center-circle { animation: glow 3s ease-in-out infinite; }
+.back-nav {
+  position: fixed; top: 14px; right: 16px; z-index: 9999;
+  display: flex; align-items: center;
+  background: rgba(13,27,42,.88);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(212,168,71,.35);
+  border-radius: 24px;
+  font-family: 'Cairo', sans-serif;
+  font-size: 13px; font-weight: 700;
+  box-shadow: 0 2px 12px rgba(0,0,0,.4);
+  overflow: hidden;
+}
+.back-nav button, .back-nav a {
+  display: flex; align-items: center; gap: 5px;
+  padding: 8px 13px;
+  color: #D4A847; background: none; border: none;
+  text-decoration: none; cursor: pointer;
+  font-family: 'Cairo', sans-serif; font-size: 13px; font-weight: 700;
+  transition: background .18s, color .18s; white-space: nowrap;
+}
+.back-nav button:hover, .back-nav a:hover { background: rgba(212,168,71,.13); color: #F0CC78; }
+.back-nav .nav-sep { color: rgba(212,168,71,.3); padding: 0; user-select: none; }
 </style>
 </head>
 <body>
+<div class="back-nav">
+  <button onclick="history.length>1?history.back():window.location.href='index.html'">&#8592; رجوع</button>
+  <span class="nav-sep">|</span>
+  <a href="index.html">⌂ الرئيسية</a>
+</div>
 
 <header>
   <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>

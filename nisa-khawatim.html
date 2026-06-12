@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>خواتيم الآيات — سورة النساء</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;400;600;700;900&display=swap');
+
+:root {
+  --bg:      #0D1B2A;
+  --bg2:     #112236;
+  --bg3:     #0A1520;
+  --gold:    #D4A847;
+  --gold-lt: #F0CC78;
+  --gold-dk: #A07830;
+  --white:   #F4EFE4;
+  --muted:   #8A9BB0;
+  --line:    rgba(212,168,71,0.18);
+  --green:   #4CAF82;
+  --red:     #E05555;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: 'Cairo', sans-serif;
+  min-height: 100vh;
+}
+
+/* ── Header ── */
+header {
+  text-align: center;
+  padding: 36px 20px 28px;
+  border-bottom: 1px solid var(--line);
+  background: linear-gradient(180deg, #0A1520 0%, var(--bg) 100%);
+  position: relative;
+}
+header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 80% at 50% 0%, rgba(212,168,71,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+.surah-name {
+  font-family: 'Amiri', serif;
+  font-size: clamp(30px, 7vw, 52px);
+  color: var(--gold);
+  text-shadow: 0 0 40px rgba(212,168,71,0.35);
+  line-height: 1;
+}
+.page-title {
+  font-size: clamp(14px, 3vw, 18px);
+  color: var(--muted);
+  margin-top: 6px;
+  letter-spacing: 1px;
+}
+.bismillah {
+  font-family: 'Amiri', serif;
+  font-size: clamp(14px, 2.5vw, 19px);
+  color: rgba(240,204,120,0.6);
+  margin-top: 10px;
+}
+
+/* ── Stats bar ── */
+.stats-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  flex-wrap: wrap;
+  padding: 14px 20px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+  color: var(--muted);
+}
+.stat { display: flex; align-items: center; gap: 6px; }
+.stat strong { color: var(--gold); font-size: 16px; }
+.progress-bar {
+  width: 160px;
+  height: 4px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--gold);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+/* ── Controls ── */
+.controls {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px 16px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.filter-row, .action-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.filter-label {
+  font-size: 12px;
+  color: var(--muted);
+  margin-left: 4px;
+}
+
+.btn {
+  padding: 7px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  font-family: 'Cairo', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn:hover { border-color: var(--gold); color: var(--gold-lt); }
+.btn.active {
+  background: rgba(212,168,71,0.15);
+  border-color: var(--gold);
+  color: var(--gold-lt);
+  font-weight: 600;
+}
+.btn-action {
+  padding: 7px 18px;
+  border-radius: 20px;
+  border: none;
+  font-family: 'Cairo', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-shuffle { background: rgba(212,168,71,0.18); color: var(--gold-lt); }
+.btn-shuffle:hover { background: rgba(212,168,71,0.3); }
+.btn-show { background: rgba(76,175,130,0.15); color: var(--green); }
+.btn-show:hover { background: rgba(76,175,130,0.28); }
+.btn-hide { background: rgba(255,255,255,0.06); color: var(--muted); }
+.btn-hide:hover { background: rgba(255,255,255,0.12); }
+
+/* ── Card Grid ── */
+.grid {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px 16px 60px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+/* ── Flip Card ── */
+.card-wrap {
+  perspective: 900px;
+  height: 180px;
+  cursor: pointer;
+}
+.card-wrap.hidden { display: none; }
+.card-inner {
+  position: relative;
+  width: 100%; height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card-wrap.flipped .card-inner { transform: rotateY(180deg); }
+
+.card-front, .card-back {
+  position: absolute; inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+/* Front */
+.card-front {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+}
+.card-front:hover {
+  border-color: rgba(212,168,71,0.4);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.card-num {
+  font-size: 11px;
+  color: var(--gold-dk);
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.juz-badge {
+  background: rgba(212,168,71,0.12);
+  border: 1px solid rgba(212,168,71,0.25);
+  border-radius: 10px;
+  padding: 2px 8px;
+  font-size: 10px;
+  color: var(--gold);
+}
+.card-start {
+  font-family: 'Amiri', serif;
+  font-size: 16px;
+  line-height: 1.9;
+  color: var(--white);
+  flex: 1;
+}
+.card-hint {
+  text-align: center;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 8px;
+}
+/* Back */
+.card-back {
+  background: linear-gradient(135deg, #0F2035 0%, #1A3050 100%);
+  border: 1px solid rgba(212,168,71,0.45);
+  transform: rotateY(180deg);
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  box-shadow: inset 0 0 30px rgba(212,168,71,0.05);
+}
+.card-end {
+  font-family: 'Amiri', serif;
+  font-size: clamp(17px, 2.5vw, 22px);
+  color: var(--gold-lt);
+  line-height: 2;
+  text-shadow: 0 0 20px rgba(212,168,71,0.3);
+}
+.card-back-num {
+  font-size: 11px;
+  color: var(--gold-dk);
+  margin-bottom: 10px;
+}
+/* Similar badge */
+.similar-tag {
+  margin-top: 10px;
+  font-size: 10px;
+  color: var(--muted);
+  background: rgba(255,255,255,0.05);
+  border-radius: 8px;
+  padding: 3px 10px;
+}
+
+/* ── Empty state ── */
+.empty { text-align: center; padding: 60px 20px; color: var(--muted); grid-column: 1/-1; }
+
+/* ── Scroll to top ── */
+.scroll-top {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: rgba(212,168,71,0.2);
+  border: 1px solid var(--line);
+  color: var(--gold);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+  opacity: 0.7;
+}
+.scroll-top:hover { opacity: 1; background: rgba(212,168,71,0.35); }
+
+/* Responsive */
+@media (max-width: 480px) {
+  .grid { grid-template-columns: 1fr; }
+  .card-wrap { height: 200px; }
+}
+.back-nav {
+  position: fixed; top: 14px; right: 16px; z-index: 9999;
+  display: flex; align-items: center;
+  background: rgba(13,27,42,.88);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(212,168,71,.35);
+  border-radius: 24px;
+  font-family: 'Cairo', sans-serif;
+  font-size: 13px; font-weight: 700;
+  box-shadow: 0 2px 12px rgba(0,0,0,.4);
+  overflow: hidden;
+}
+.back-nav button, .back-nav a {
+  display: flex; align-items: center; gap: 5px;
+  padding: 8px 13px;
+  color: #D4A847; background: none; border: none;
+  text-decoration: none; cursor: pointer;
+  font-family: 'Cairo', sans-serif; font-size: 13px; font-weight: 700;
+  transition: background .18s, color .18s; white-space: nowrap;
+}
+.back-nav button:hover, .back-nav a:hover { background: rgba(212,168,71,.13); color: #F0CC78; }
+.back-nav .nav-sep { color: rgba(212,168,71,.3); padding: 0; user-select: none; }
+</style>
+</head>
+<body>
+<div class="back-nav">
+  <button onclick="history.length>1?history.back():window.location.href='index.html'">&#8592; رجوع</button>
+  <span class="nav-sep">|</span>
+  <a href="index.html">⌂ الرئيسية</a>
+</div>
+
+<header>
+  <div class="surah-name">سورة النساء</div>
+  <div class="page-title">خواتيم الآيات — تدريب الحفظ</div>
+  <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+</header>
+
+<div class="stats-bar">
+  <div class="stat">
+    <span>الآيات:</span>
+    <strong id="total-count">0</strong>
+  </div>
+  <div class="stat">
+    <span>مكشوف:</span>
+    <strong id="revealed-count">0</strong>
+  </div>
+  <div class="progress-bar">
+    <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+  </div>
+  <div class="stat">
+    <strong id="pct">0%</strong>
+  </div>
+</div>
+
+<div class="controls">
+  <div class="filter-row">
+    <span class="filter-label">الجزء:</span>
+    <button class="btn active" data-juz="0">الكل</button>
+    <button class="btn" data-juz="4">الجزء الرابع</button>
+    <button class="btn" data-juz="5">الجزء الخامس</button>
+    <button class="btn" data-juz="6">الجزء السادس</button>
+  </div>
+  <div class="action-row">
+    <button class="btn-action btn-shuffle" id="btn-shuffle">🔀 عشوائي</button>
+    <button class="btn-action btn-show"    id="btn-show">👁 إظهار الكل</button>
+    <button class="btn-action btn-hide"    id="btn-hide">🙈 إخفاء الكل</button>
+  </div>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<button class="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+// ─── Data ─────────────────────────────────────────────────────────────────
+// similar[n] = verse numbers that share the same ending (to show a note)
+const similar = {
+  5:  [8],  8:  [5],
+  11: [17, 24, 92, 104, 111, 170],
+  17: [11, 24, 92, 104, 111, 170],
+  24: [11, 17, 92, 104, 111, 170],
+  92: [11, 17, 24, 104, 111, 170],
+  104:[11, 17, 24, 92,  111, 170],
+  111:[11, 17, 24, 92,  104, 170],
+  170:[11, 17, 24, 92,  104, 111],
+  48: [116],
+  116:[48],
+  56: [158, 165],
+  158:[56, 165],
+  165:[56, 158],
+  100:[110, 152],
+  110:[100, 152],
+  152:[100, 110],
+  58: [148],
+  148:[58],
+  149:[43],
+  43: [149],
+};
+
+const verses = [
+  // ── الجزء الرابع ─────────────────────────────────────────────────────
+  { n: 1,   juz: 4,
+    start: "يَا أَيُّهَا النَّاسُ اتَّقُوا رَبَّكُمُ الَّذِي خَلَقَكُم مِّن نَّفْسٍ وَاحِدَةٍ...",
+    end:   "إِنَّ اللَّهَ كَانَ عَلَيْكُمْ رَقِيبًا" },
+
+  { n: 2,   juz: 4,
+    start: "وَآتُوا الْيَتَامَىٰ أَمْوَالَهُمْ وَلَا تَتَبَدَّلُوا الْخَبِيثَ بِالطَّيِّبِ...",
+    end:   "إِنَّهُ كَانَ حُوبًا كَبِيرًا" },
+
+  { n: 3,   juz: 4,
+    start: "وَإِنْ خِفْتُمْ أَلَّا تُقْسِطُوا فِي الْيَتَامَىٰ فَانكِحُوا مَا طَابَ لَكُم...",
+    end:   "ذَٰلِكَ أَدْنَىٰ أَلَّا تَعُولُوا" },
+
+  { n: 4,   juz: 4,
+    start: "وَآتُوا النِّسَاءَ صَدُقَاتِهِنَّ نِحْلَةً ۚ فَإِن طِبْنَ لَكُمْ عَن شَيْءٍ مِّنْهُ نَفْسًا...",
+    end:   "فَكُلُوهُ هَنِيئًا مَّرِيئًا" },
+
+  { n: 5,   juz: 4,
+    start: "وَلَا تُؤْتُوا السُّفَهَاءَ أَمْوَالَكُمُ الَّتِي جَعَلَ اللَّهُ لَكُمْ قِيَامًا...",
+    end:   "وَقُولُوا لَهُمْ قَوْلًا مَّعْرُوفًا" },
+
+  { n: 6,   juz: 4,
+    start: "وَابْتَلُوا الْيَتَامَىٰ حَتَّىٰ إِذَا بَلَغُوا النِّكَاحَ فَإِنْ آنَسْتُم مِّنْهُمْ رُشْدًا...",
+    end:   "وَكَفَىٰ بِاللَّهِ حَسِيبًا" },
+
+  { n: 7,   juz: 4,
+    start: "لِّلرِّجَالِ نَصِيبٌ مِّمَّا تَرَكَ الْوَالِدَانِ وَالْأَقْرَبُونَ...",
+    end:   "نَصِيبًا مَّفْرُوضًا" },
+
+  { n: 8,   juz: 4,
+    start: "وَإِذَا حَضَرَ الْقِسْمَةَ أُولُو الْقُرْبَىٰ وَالْيَتَامَىٰ وَالْمَسَاكِينُ...",
+    end:   "وَقُولُوا لَهُمْ قَوْلًا مَّعْرُوفًا" },
+
+  { n: 9,   juz: 4,
+    start: "وَلْيَخْشَ الَّذِينَ لَوْ تَرَكُوا مِنْ خَلْفِهِمْ ذُرِّيَّةً ضِعَافًا خَافُوا عَلَيْهِمْ...",
+    end:   "وَلْيَقُولُوا قَوْلًا سَدِيدًا" },
+
+  { n: 10,  juz: 4,
+    start: "إِنَّ الَّذِينَ يَأْكُلُونَ أَمْوَالَ الْيَتَامَىٰ ظُلْمًا إِنَّمَا يَأْكُلُونَ فِي بُطُونِهِمْ نَارًا...",
+    end:   "وَسَيَصْلَوْنَ سَعِيرًا" },
+
+  { n: 11,  juz: 4,
+    start: "يُوصِيكُمُ اللَّهُ فِي أَوْلَادِكُمْ ۖ لِلذَّكَرِ مِثْلُ حَظِّ الْأُنثَيَيْنِ...",
+    end:   "إِنَّ اللَّهَ كَانَ عَلِيمًا حَكِيمًا" },
+
+  { n: 12,  juz: 4,
+    start: "وَلَكُمْ نِصْفُ مَا تَرَكَ أَزْوَاجُكُمْ إِن لَّمْ يَكُن لَّهُنَّ وَلَدٌ...",
+    end:   "وَاللَّهُ عَلِيمٌ حَلِيمٌ" },
+
+  { n: 13,  juz: 4,
+    start: "تِلْكَ حُدُودُ اللَّهِ ۚ وَمَن يُطِعِ اللَّهَ وَرَسُولَهُ يُدْخِلْهُ جَنَّاتٍ...",
+    end:   "وَذَٰلِكَ الْفَوْزُ الْعَظِيمُ" },
+
+  { n: 14,  juz: 4,
+    start: "وَمَن يَعْصِ اللَّهَ وَرَسُولَهُ وَيَتَعَدَّ حُدُودَهُ يُدْخِلْهُ نَارًا خَالِدًا فِيهَا...",
+    end:   "وَلَهُ عَذَابٌ مُّهِينٌ" },
+
+  { n: 17,  juz: 4,
+    start: "إِنَّمَا التَّوْبَةُ عَلَى اللَّهِ لِلَّذِينَ يَعْمَلُونَ السُّوءَ بِجَهَالَةٍ ثُمَّ يَتُوبُونَ مِن قَرِيبٍ...",
+    end:   "وَكَانَ اللَّهُ عَلِيمًا حَكِيمًا" },
+
+  { n: 18,  juz: 4,
+    start: "وَلَيْسَتِ التَّوْبَةُ لِلَّذِينَ يَعْمَلُونَ السَّيِّئَاتِ حَتَّىٰ إِذَا حَضَرَ أَحَدَهُمُ الْمَوْتُ...",
+    end:   "وَأَعْتَدْنَا لِلْكَافِرِينَ عَذَابًا أَلِيمًا" },
+
+  { n: 19,  juz: 4,
+    start: "يَا أَيُّهَا الَّذِينَ آمَنُوا لَا يَحِلُّ لَكُمْ أَن تَرِثُوا النِّسَاءَ كَرْهًا...",
+    end:   "فَإِنَّ اللَّهَ كَانَ بِمَا تَعْمَلُونَ خَبِيرًا" },
+
+  { n: 23,  juz: 4,
+    start: "حُرِّمَتْ عَلَيْكُمْ أُمَّهَاتُكُمْ وَبَنَاتُكُمْ وَأَخَوَاتُكُمْ وَعَمَّاتُكُمْ...",
+    end:   "إِنَّ اللَّهَ كَانَ غَفُورًا رَّحِيمًا" },
+
+  // ── الجزء الخامس ─────────────────────────────────────────────────────
+  { n: 24,  juz: 5,
+    start: "وَالْمُحْصَنَاتُ مِنَ النِّسَاءِ إِلَّا مَا مَلَكَتْ أَيْمَانُكُمْ ۖ كِتَابَ اللَّهِ عَلَيْكُمْ...",
+    end:   "إِنَّ اللَّهَ كَانَ عَلِيمًا حَكِيمًا" },
+
+  { n: 26,  juz: 5,
+    start: "يُرِيدُ اللَّهُ لِيُبَيِّنَ لَكُمْ وَيَهْدِيَكُمْ سُنَنَ الَّذِينَ مِن قَبْلِكُمْ...",
+    end:   "وَاللَّهُ عَلِيمٌ حَكِيمٌ" },
+
+  { n: 28,  juz: 5,
+    start: "يُرِيدُ اللَّهُ أَن يُخَفِّفَ عَنكُمْ...",
+    end:   "وَخُلِقَ الْإِنسَانُ ضَعِيفًا" },
+
+  { n: 29,  juz: 5,
+    start: "يَا أَيُّهَا الَّذِينَ آمَنُوا لَا تَأْكُلُوا أَمْوَالَكُم بَيْنَكُم بِالْبَاطِلِ...",
+    end:   "إِنَّ اللَّهَ كَانَ بِكُمْ رَحِيمًا" },
+
+  { n: 30,  juz: 5,
+    start: "وَمَن يَفْعَلْ ذَٰلِكَ عُدْوَانًا وَظُلْمًا فَسَوْفَ نُصْلِيهِ نَارًا...",
+    end:   "وَكَانَ ذَٰلِكَ عَلَى اللَّهِ يَسِيرًا" },
+
+  { n: 32,  juz: 5,
+    start: "وَلَا تَتَمَنَّوْا مَا فَضَّلَ اللَّهُ بِهِ بَعْضَكُمْ عَلَىٰ بَعْضٍ...",
+    end:   "إِنَّ اللَّهَ كَانَ بِكُلِّ شَيْءٍ عَلِيمًا" },
+
+  { n: 36,  juz: 5,
+    start: "وَاعْبُدُوا اللَّهَ وَلَا تُشْرِكُوا بِهِ شَيْئًا وَبِالْوَالِدَيْنِ إِحْسَانًا...",
+    end:   "إِنَّ اللَّهَ لَا يُحِبُّ مَن كَانَ مُخْتَالًا فَخُورًا" },
+
+  { n: 40,  juz: 5,
+    start: "إِنَّ اللَّهَ لَا يَظْلِمُ مِثْقَالَ ذَرَّةٍ...",
+    end:   "وَيُؤْتِ مِن لَّدُنْهُ أَجْرًا عَظِيمًا" },
+
+  { n: 43,  juz: 5,
+    start: "يَا أَيُّهَا الَّذِينَ آمَنُوا لَا تَقْرَبُوا الصَّلَاةَ وَأَنتُمْ سُكَارَىٰ...",
+    end:   "إِنَّ اللَّهَ كَانَ عَفُوًّا غَفُورًا" },
+
+  { n: 48,  juz: 5,
+    start: "إِنَّ اللَّهَ لَا يَغْفِرُ أَن يُشْرَكَ بِهِ وَيَغْفِرُ مَا دُونَ ذَٰلِكَ لِمَن يَشَاءُ ۚ وَمَن يُشْرِكْ بِاللَّهِ...",
+    end:   "فَقَدِ افْتَرَىٰ إِثْمًا عَظِيمًا" },
+
+  { n: 56,  juz: 5,
+    start: "إِنَّ الَّذِينَ كَفَرُوا بِآيَاتِنَا سَوْفَ نُصْلِيهِمْ نَارًا...",
+    end:   "إِنَّ اللَّهَ كَانَ عَزِيزًا حَكِيمًا" },
+
+  { n: 58,  juz: 5,
+    start: "إِنَّ اللَّهَ يَأْمُرُكُمْ أَن تُؤَدُّوا الْأَمَانَاتِ إِلَىٰ أَهْلِهَا...",
+    end:   "إِنَّ اللَّهَ كَانَ سَمِيعًا بَصِيرًا" },
+
+  { n: 59,  juz: 5,
+    start: "يَا أَيُّهَا الَّذِينَ آمَنُوا أَطِيعُوا اللَّهَ وَأَطِيعُوا الرَّسُولَ وَأُولِي الْأَمْرِ مِنكُمْ...",
+    end:   "ذَٰلِكَ خَيْرٌ وَأَحْسَنُ تَأْوِيلًا" },
+
+  { n: 69,  juz: 5,
+    start: "وَمَن يُطِعِ اللَّهَ وَالرَّسُولَ فَأُولَٰئِكَ مَعَ الَّذِينَ أَنْعَمَ اللَّهُ عَلَيْهِم...",
+    end:   "وَحَسُنَ أُولَٰئِكَ رَفِيقًا" },
+
+  { n: 79,  juz: 5,
+    start: "مَّا أَصَابَكَ مِنْ حَسَنَةٍ فَمِنَ اللَّهِ ۖ وَمَا أَصَابَكَ مِن سَيِّئَةٍ فَمِن نَّفْسِكَ...",
+    end:   "وَكَفَىٰ بِاللَّهِ شَهِيدًا" },
+
+  { n: 87,  juz: 5,
+    start: "اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ ۚ لَيَجْمَعَنَّكُمْ إِلَىٰ يَوْمِ الْقِيَامَةِ لَا رَيْبَ فِيهِ...",
+    end:   "وَمَنْ أَصْدَقُ مِنَ اللَّهِ حَدِيثًا" },
+
+  { n: 92,  juz: 5,
+    start: "وَمَا كَانَ لِمُؤْمِنٍ أَن يَقْتُلَ مُؤْمِنًا إِلَّا خَطَأً...",
+    end:   "وَكَانَ اللَّهُ عَلِيمًا حَكِيمًا" },
+
+  { n: 100, juz: 5,
+    start: "وَمَن يُهَاجِرْ فِي سَبِيلِ اللَّهِ يَجِدْ فِي الْأَرْضِ مُرَاغَمًا كَثِيرًا وَسَعَةً...",
+    end:   "وَكَانَ اللَّهُ غَفُورًا رَّحِيمًا" },
+
+  { n: 104, juz: 5,
+    start: "وَلَا تَهِنُوا فِي ابْتِغَاءِ الْقَوْمِ ۖ إِن تَكُونُوا تَأْلَمُونَ فَإِنَّهُمْ يَأْلَمُونَ كَمَا تَأْلَمُونَ...",
+    end:   "وَكَانَ اللَّهُ عَلِيمًا حَكِيمًا" },
+
+  { n: 110, juz: 5,
+    start: "وَمَن يَعْمَلْ سُوءًا أَوْ يَظْلِمْ نَفْسَهُ ثُمَّ يَسْتَغْفِرِ اللَّهَ...",
+    end:   "يَجِدِ اللَّهَ غَفُورًا رَّحِيمًا" },
+
+  { n: 111, juz: 5,
+    start: "وَمَن يَكْسِبْ إِثْمًا فَإِنَّمَا يَكْسِبُهُ عَلَىٰ نَفْسِهِ...",
+    end:   "وَكَانَ اللَّهُ عَلِيمًا حَكِيمًا" },
+
+  { n: 116, juz: 5,
+    start: "إِنَّ اللَّهَ لَا يَغْفِرُ أَن يُشْرَكَ بِهِ وَيَغْفِرُ مَا دُونَ ذَٰلِكَ لِمَن يَشَاءُ ۚ وَمَن يُشْرِكْ بِاللَّهِ...",
+    end:   "فَقَدْ ضَلَّ ضَلَالًا بَعِيدًا" },
+
+  { n: 125, juz: 5,
+    start: "وَمَنْ أَحْسَنُ دِينًا مِّمَّنْ أَسْلَمَ وَجْهَهُ لِلَّهِ وَهُوَ مُحْسِنٌ...",
+    end:   "وَاتَّخَذَ اللَّهُ إِبْرَاهِيمَ خَلِيلًا" },
+
+  { n: 130, juz: 5,
+    start: "وَإِن يَتَفَرَّقَا يُغْنِ اللَّهُ كُلًّا مِّن سَعَتِهِ...",
+    end:   "وَكَانَ اللَّهُ وَاسِعًا حَكِيمًا" },
+
+  { n: 135, juz: 5,
+    start: "يَا أَيُّهَا الَّذِينَ آمَنُوا كُونُوا قَوَّامِينَ بِالْقِسْطِ شُهَدَاءَ لِلَّهِ...",
+    end:   "فَإِنَّ اللَّهَ كَانَ بِمَا تَعْمَلُونَ خَبِيرًا" },
+
+  { n: 147, juz: 5,
+    start: "مَّا يَفْعَلُ اللَّهُ بِعَذَابِكُمْ إِن شَكَرْتُمْ وَآمَنتُمْ...",
+    end:   "وَكَانَ اللَّهُ شَاكِرًا عَلِيمًا" },
+
+  // ── الجزء السادس ─────────────────────────────────────────────────────
+  { n: 148, juz: 6,
+    start: "لَّا يُحِبُّ اللَّهُ الْجَهْرَ بِالسُّوءِ مِنَ الْقَوْلِ إِلَّا مَن ظُلِمَ...",
+    end:   "وَكَانَ اللَّهُ سَمِيعًا عَلِيمًا" },
+
+  { n: 149, juz: 6,
+    start: "إِن تُبْدُوا خَيْرًا أَوْ تُخْفُوهُ أَوْ تَعْفُوا عَن سُوءٍ...",
+    end:   "وَكَانَ اللَّهُ عَفُوًّا قَدِيرًا" },
+
+  { n: 152, juz: 6,
+    start: "وَالَّذِينَ آمَنُوا بِاللَّهِ وَرُسُلِهِ وَلَمْ يُفَرِّقُوا بَيْنَ أَحَدٍ مِّنْهُمْ...",
+    end:   "وَكَانَ اللَّهُ غَفُورًا رَّحِيمًا" },
+
+  { n: 158, juz: 6,
+    start: "بَل رَّفَعَهُ اللَّهُ إِلَيْهِ...",
+    end:   "وَكَانَ اللَّهُ عَزِيزًا حَكِيمًا" },
+
+  { n: 162, juz: 6,
+    start: "لَّٰكِنِ الرَّاسِخُونَ فِي الْعِلْمِ مِنْهُمْ وَالْمُؤْمِنُونَ يُؤْمِنُونَ بِمَا أُنزِلَ إِلَيْكَ...",
+    end:   "سَنُؤْتِيهِمْ أَجْرًا عَظِيمًا" },
+
+  { n: 163, juz: 6,
+    start: "إِنَّا أَوْحَيْنَا إِلَيْكَ كَمَا أَوْحَيْنَا إِلَىٰ نُوحٍ وَالنَّبِيِّينَ مِن بَعْدِهِ...",
+    end:   "وَكَلَّمَ اللَّهُ مُوسَىٰ تَكْلِيمًا" },
+
+  { n: 165, juz: 6,
+    start: "رُّسُلًا مُّبَشِّرِينَ وَمُنذِرِينَ لِئَلَّا يَكُونَ لِلنَّاسِ عَلَى اللَّهِ حُجَّةٌ بَعْدَ الرُّسُلِ...",
+    end:   "وَكَانَ اللَّهُ عَزِيزًا حَكِيمًا" },
+
+  { n: 170, juz: 6,
+    start: "يَا أَيُّهَا النَّاسُ قَدْ جَاءَكُمُ الرَّسُولُ بِالْحَقِّ مِن رَّبِّكُمْ...",
+    end:   "وَكَانَ اللَّهُ عَلِيمًا حَكِيمًا" },
+
+  { n: 171, juz: 6,
+    start: "يَا أَهْلَ الْكِتَابِ لَا تَغْلُوا فِي دِينِكُمْ وَلَا تَقُولُوا عَلَى اللَّهِ إِلَّا الْحَقَّ...",
+    end:   "سُبْحَانَهُ أَن يَكُونَ لَهُ وَلَدٌ ۗ لَّهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ" },
+
+  { n: 176, juz: 6,
+    start: "يَسْتَفْتُونَكَ قُلِ اللَّهُ يُفْتِيكُمْ فِي الْكَلَالَةِ...",
+    end:   "وَاللَّهُ بِكُلِّ شَيْءٍ عَلِيمٌ" },
+];
+
+// ─── State ────────────────────────────────────────────────────────────────
+let currentJuz = 0;        // 0 = all
+let order = verses.map((_, i) => i);
+let flipped = new Set();
+
+// ─── Render ───────────────────────────────────────────────────────────────
+function juzLabel(j) {
+  return j === 4 ? 'الجزء الرابع' : j === 5 ? 'الجزء الخامس' : 'الجزء السادس';
+}
+
+function similarNote(v) {
+  const s = similar[v.n];
+  if (!s) return '';
+  return `تشابه مع آية: ${s.join('، ')}`;
+}
+
+function renderCards() {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+
+  const filtered = order.filter(i => currentJuz === 0 || verses[i].juz === currentJuz);
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div class="empty">لا توجد آيات في هذا الجزء</div>';
+    updateStats(0, 0);
+    return;
+  }
+
+  filtered.forEach(i => {
+    const v = verses[i];
+    const isFlipped = flipped.has(i);
+    const note = similarNote(v);
+
+    const wrap = document.createElement('div');
+    wrap.className = 'card-wrap' + (isFlipped ? ' flipped' : '');
+    wrap.dataset.idx = i;
+    wrap.innerHTML = `
+      <div class="card-inner">
+        <div class="card-front">
+          <div class="card-num">
+            <span>آية ${v.n}</span>
+            <span class="juz-badge">${juzLabel(v.juz)}</span>
+          </div>
+          <div class="card-start">${v.start}</div>
+          <div class="card-hint">اضغط لإظهار الخاتمة</div>
+        </div>
+        <div class="card-back">
+          <div class="card-back-num">آية ${v.n}</div>
+          <div class="card-end">${v.end}</div>
+          ${note ? `<div class="similar-tag">⚠️ ${note}</div>` : ''}
+        </div>
+      </div>`;
+
+    wrap.addEventListener('click', () => toggle(wrap, i));
+    grid.appendChild(wrap);
+  });
+
+  updateStats(filtered.length, filtered.filter(i => flipped.has(i)).length);
+}
+
+function toggle(wrap, idx) {
+  if (flipped.has(idx)) {
+    flipped.delete(idx);
+    wrap.classList.remove('flipped');
+  } else {
+    flipped.add(idx);
+    wrap.classList.add('flipped');
+  }
+  const vis = document.querySelectorAll('.card-wrap:not(.hidden)').length;
+  const rev = document.querySelectorAll('.card-wrap.flipped').length;
+  updateStats(vis, rev);
+}
+
+function updateStats(total, revealed) {
+  document.getElementById('total-count').textContent = total;
+  document.getElementById('revealed-count').textContent = revealed;
+  const pct = total > 0 ? Math.round(revealed / total * 100) : 0;
+  document.getElementById('pct').textContent = pct + '%';
+  document.getElementById('progress-fill').style.width = pct + '%';
+}
+
+// ─── Controls ─────────────────────────────────────────────────────────────
+document.querySelectorAll('.btn[data-juz]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.btn[data-juz]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentJuz = parseInt(btn.dataset.juz);
+    renderCards();
+  });
+});
+
+document.getElementById('btn-shuffle').addEventListener('click', () => {
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  flipped.clear();
+  renderCards();
+});
+
+document.getElementById('btn-show').addEventListener('click', () => {
+  document.querySelectorAll('.card-wrap:not(.hidden)').forEach(w => {
+    const idx = parseInt(w.dataset.idx);
+    flipped.add(idx);
+    w.classList.add('flipped');
+  });
+  const vis = document.querySelectorAll('.card-wrap:not(.hidden)').length;
+  updateStats(vis, vis);
+});
+
+document.getElementById('btn-hide').addEventListener('click', () => {
+  flipped.clear();
+  document.querySelectorAll('.card-wrap').forEach(w => w.classList.remove('flipped'));
+  const vis = document.querySelectorAll('.card-wrap:not(.hidden)').length;
+  updateStats(vis, 0);
+});
+
+// ─── Init ─────────────────────────────────────────────────────────────────
+renderCards();
+</script>
+</body>
+</html>
