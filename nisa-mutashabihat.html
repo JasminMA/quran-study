@@ -332,10 +332,13 @@ main {
   background: var(--bg2);
   border: 1px solid var(--line);
   border-radius: 18px;
-  max-width: 580px; width: 100%;
+  max-width: 620px; width: 100%;
+  max-height: 85vh;
   box-shadow: 0 20px 60px rgba(0,0,0,.6);
   overflow: hidden;
+  display: flex; flex-direction: column;
 }
+.modal-body { padding: 24px 22px; overflow-y: auto; }
 .modal-head {
   display: flex; align-items: center; justify-content: space-between;
   padding: 14px 20px;
@@ -355,7 +358,6 @@ main {
   transition: background .15s, color .15s;
 }
 .modal-close:hover { background: var(--red-bg); color: var(--red); }
-.modal-body { padding: 24px 22px; }
 .modal-verse {
   font-family: 'Amiri', serif;
   font-size: clamp(18px, 3.5vw, 24px);
@@ -596,20 +598,41 @@ NEAR.forEach(p => {
 });
 
 // ── Modal ──────────────────────────────────────────────────────────
-function openModal(num) {
+const VERSE_CACHE = {};
+
+async function openModal(num) {
   const v = VERSES[num];
   if (!v) return;
-  const overlay = document.getElementById('modal-overlay');
-  document.getElementById('modal-ref-num').textContent = 'النساء · آية ' + toAr(num);
-  const bodyEl = document.getElementById('modal-verse-body');
-  if (v.start) {
-    bodyEl.innerHTML = `﴿ ${v.start} <span class="hl">${v.end}</span> ﴾`;
-  } else {
-    bodyEl.innerHTML = `﴿ ... <span class="hl">${v.end}</span> ﴾`;
-    document.getElementById('modal-note').style.display = 'block';
-  }
-  if (v.start) document.getElementById('modal-note').style.display = 'none';
+
+  const overlay  = document.getElementById('modal-overlay');
+  const refEl    = document.getElementById('modal-ref-num');
+  const bodyEl   = document.getElementById('modal-verse-body');
+  const noteEl   = document.getElementById('modal-note');
+
+  refEl.textContent = 'النساء · آية ' + toAr(num);
+  noteEl.style.display = 'none';
+  bodyEl.innerHTML = '<span style="color:var(--muted);font-size:14px">جارٍ التحميل...</span>';
   overlay.classList.add('open');
+
+  if (VERSE_CACHE[num]) { bodyEl.innerHTML = VERSE_CACHE[num]; return; }
+
+  try {
+    const res  = await fetch(`https://api.alquran.cloud/v1/ayah/4:${num}/quran-uthmani`);
+    const json = await res.json();
+    const full = json.data.text;
+
+    let html;
+    if (full.includes(v.end)) {
+      html = `﴿ ${full.replace(v.end, `<span class="hl">${v.end}</span>`)} ﴾`;
+    } else {
+      html = `﴿ ${full} ﴾<div style="margin-top:14px;font-size:13px;color:var(--gold)">الخاتمة: ${v.end}</div>`;
+    }
+
+    VERSE_CACHE[num] = html;
+    bodyEl.innerHTML = html;
+  } catch (_) {
+    bodyEl.innerHTML = '<span style="color:var(--muted)">تعذَّر تحميل الآية — تحقق من الاتصال بالإنترنت</span>';
+  }
 }
 
 function closeModal() {
