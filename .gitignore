@@ -6,6 +6,7 @@
 node_modules/
 
 # Scripts / dev utilities
+scripts/
 download_nisa_media.py
 explore_bot.py
 nisa-bot-resources/

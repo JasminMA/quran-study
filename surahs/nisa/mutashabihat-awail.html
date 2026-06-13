@@ -274,8 +274,8 @@ main { max-width: 900px; margin: 24px auto 60px; padding: 0 20px; }
 <script>
 
 // ── URLs ────────────────────────────────────────────────────────────
-const API_NISA   = 'https://api.alquran.cloud/v1/surah/4/quran-uthmani';
-const JSON_QURAN = '../../assets/data/quran-openings.json';
+const JSON_UTHMANI = '../../assets/data/quran-uthmani.json'; // full Quran raw text
+const JSON_QURAN   = '../../assets/data/quran-openings.json'; // pre-processed openings
 
 // ── State ───────────────────────────────────────────────────────────
 var SCOPE         = 'nisa';
@@ -431,21 +431,32 @@ function _showError() {
   document.getElementById('error').style.display = 'block';
 }
 
+// Cached promise for quran-uthmani.json so we never fetch it twice
+var _uthmaniPromise = null;
+function _ensureUthmani() {
+  if (!_uthmaniPromise) {
+    _uthmaniPromise = fetch(JSON_UTHMANI)
+      .then(function(r) { return r.json(); })
+      .then(function(data) { initQuranText(data); return data; });
+  }
+  return _uthmaniPromise;
+}
+
 function _loadNisa() {
-  _showLoading('جارٍ تحليل آيات سورة النساء…');
-  fetch(API_NISA)
-    .then(function(r) { return r.json(); })
-    .then(function(json) {
+  _showLoading('جارٍ تحميل آيات سورة النساء…');
+  _ensureUthmani()
+    .then(function(qt) {
       var NISA_NAME = 'النساء';
-      _nisaData = json.data.ayahs.map(function(ay) {
-        var conn = getConnector(ay.text);
+      // qt[3] = surah 4 (0-indexed); each entry is the raw Uthmani text of that ayah
+      _nisaData = qt[3].map(function(text, idx) {
+        var conn = getConnector(text);
         return {
           s: 4,
-          a: ay.numberInSurah,
+          a: idx + 1,
           sn: NISA_NAME,
           conn: conn.key,
           words: conn.stripped.split(/\s+/).filter(Boolean).slice(0, MAX_WORDS),
-          text: ay.text
+          text: text
         };
       });
       ALL_DATA   = _nisaData;
@@ -456,7 +467,7 @@ function _loadNisa() {
       renderGroups(ALL_GROUPS);
     })
     .catch(function(e) {
-      console.error('[awail] nisa fetch error:', e);
+      console.error('[awail] uthmani load error:', e);
       _showError();
     });
 }
