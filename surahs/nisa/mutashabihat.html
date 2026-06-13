@@ -559,7 +559,7 @@ NEAR.forEach(p => {
 // ── Modal ──────────────────────────────────────────────────────────
 const VERSE_CACHE = {};
 
-async function openModal(num) {
+function openModal(num) {
   const v = VERSES[num];
   if (!v) return;
 
@@ -575,23 +575,21 @@ async function openModal(num) {
 
   if (VERSE_CACHE[num]) { bodyEl.innerHTML = VERSE_CACHE[num]; return; }
 
-  try {
-    const res  = await fetch(`https://api.alquran.cloud/v1/ayah/4:${num}/quran-uthmani`);
-    const json = await res.json();
-    const full = json.data.text;
-
-    let html;
-    if (full.includes(v.end)) {
-      html = `﴿ ${full.replace(v.end, `<span class="hl">${v.end}</span>`)} ﴾`;
-    } else {
-      html = `﴿ ${full} ﴾<div style="margin-top:14px;font-size:13px;color:var(--gold)">الخاتمة: ${v.end}</div>`;
-    }
-
-    VERSE_CACHE[num] = html;
-    bodyEl.innerHTML = html;
-  } catch (_) {
-    bodyEl.innerHTML = '<span style="color:var(--muted)">تعذَّر تحميل الآية — تحقق من الاتصال بالإنترنت</span>';
+  const full = getAyah(4, num);
+  if (!full) {
+    bodyEl.innerHTML = '<span style="color:var(--muted)">جارٍ تحميل البيانات…</span>';
+    return;
   }
+
+  let html;
+  if (full.includes(v.end)) {
+    html = `﴿ ${full.replace(v.end, `<span class="hl">${v.end}</span>`)} ﴾`;
+  } else {
+    html = `﴿ ${full} ﴾<div style="margin-top:14px;font-size:13px;color:var(--gold)">الخاتمة: ${v.end}</div>`;
+  }
+
+  VERSE_CACHE[num] = html;
+  bodyEl.innerHTML = html;
 }
 
 function closeModal() {
@@ -603,6 +601,11 @@ document.getElementById('modal-overlay').addEventListener('click', function(e) {
 });
 
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+fetch('../../assets/data/quran-uthmani.json')
+  .then(r => r.json())
+  .then(data => initQuranText(data))
+  .catch(e => console.error('[mutashabihat] failed to load quran-uthmani.json', e));
 
 
 </script>
