@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>متشابهات الأوائل — سورة النساء</title>
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../../assets/css/theme.css">
 <style>
 
@@ -207,7 +208,7 @@ let currentFilter = 'all';
 // ── Text normalization ─────────────────────────────────────────────
 function normalize(text) {
   return text
-    .replace(/[ؐ-ًؚ-ٰٟۖ-ۭ]/g, '')
+    .replace(/[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06ED]/g, '')
     .replace(/ٱ/g, 'ا')
     .replace(/\s+/g, ' ')
     .trim();
