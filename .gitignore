@@ -1,0 +1,14 @@
+# IDE
+.idea/
+.vscode/
+
+# Node
+node_modules/
+
+# Scripts / dev utilities
+download_nisa_media.py
+explore_bot.py
+nisa-bot-resources/
+
+# Misc
+*.png
