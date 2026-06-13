@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -200,47 +200,49 @@ main { max-width: 900px; margin: 24px auto 60px; padding: 0 20px; }
 
 const API_URL    = 'https://api.alquran.cloud/v1/surah/4/quran-uthmani';
 const STEM_WORDS = 2;
-// Unicode range for Arabic diacritics (tashkeel)
-const DIACRITICS = /[ً-ٟؐ-ؚۖ-ۜ۟-۪ۤۧۨ-ٰۭ]/g;
 
 let ALL_GROUPS    = [];
 let currentFilter = 'all';
 
-// ── Connector helpers ──────────────────────────────────────────────
-function stripDiacritics(text) {
-  return text.replace(DIACRITICS, '');
+// ── Text normalization ─────────────────────────────────────────────
+function normalize(text) {
+  return text
+    .replace(/[ً-ٰٟۖ-ۜ۟-۪ۤۧۨ-ۭ]/g, '')
+    .replace(/ٱ/g, 'ا')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 function getConnector(text) {
-  // Detect connector from bare letter (diacritics-agnostic)
-  const bare = stripDiacritics(text);
-  if (/^و/.test(bare)) return { key: 'waw',  cls: 'conn-waw',  hlCls: 'hl-waw' };
-  if (/^ف/.test(bare)) return { key: 'fa',   cls: 'conn-fa',   hlCls: 'hl-fa'  };
-  return                       { key: 'none', cls: 'conn-none', hlCls: ''       };
-}
-
-function getConnectorLabel(text) {
-  // Extract the actual letter + its diacritics from the original text for display
-  const m = text.match(/^([وف][ً-ٟؐ-ؚٰ]*)/);
-  return m ? m[1] : 'بدون';
+  const n = normalize(text);
+  if (n.charAt(0) === 'و') return { key: 'waw',  cls: 'conn-waw',  hlCls: 'hl-waw' };
+  if (n.charAt(0) === 'ف') return { key: 'fa',   cls: 'conn-fa',   hlCls: 'hl-fa'  };
+  return                                { key: 'none', cls: 'conn-none', hlCls: ''       };
 }
 
 function getStem(text) {
-  // Strip diacritics + leading connector, then take first N words as grouping key
-  return stripDiacritics(text)
-    .replace(/^[وف]\s*/, '')
-    .trim()
-    .split(/\s+/)
-    .slice(0, STEM_WORDS)
-    .join(' ');
+  const n = normalize(text);
+  const first = n.charAt(0);
+  const stripped = (first === 'و' || first === 'ف') ? n.slice(1) : n;
+  return stripped.trim().split(/\s+/).slice(0, STEM_WORDS).join(' ');
 }
 
 function highlightOpening(text, conn) {
   if (conn.key === 'none') return text;
-  // Match the connector letter plus all immediately following diacritics
-  const m = text.match(/^([وف][ً-ٟؐ-ؚٰ]*)([\s\S]*)/);
+  const idx = text.search(/[؀-ۿ]/);
+  if (idx === -1) return text;
+  // grab the connector letter plus any diacritics immediately following
+  const rest = text.slice(idx);
+  const m = rest.match(/^([؀-ۿ][ً-ٰٟ]*)([\s\S]*)/);
   if (!m) return text;
-  return `<span class="${conn.hlCls}">${m[1]}</span>${m[2]}`;
+  return text.slice(0, idx) + '<span class="' + conn.hlCls + '">' + m[1] + '</span>' + m[2];
+}
+
+function getConnectorLabel(text) {
+  const idx = text.search(/[؀-ۿ]/);
+  if (idx === -1) return 'بدون';
+  const m = text.slice(idx).match(/^([؀-ۿ][ً-ٰٟ]*)/);
+  return m ? m[1] : 'بدون';
 }
 
 // ── Analysis ───────────────────────────────────────────────────────
@@ -252,6 +254,16 @@ function findGroups(ayahs) {
     map.get(stem).push(ayah);
   }
 
+  // Debug output in console
+  const multiStems = [...map.entries()].filter(([, v]) => v.length >= 2);
+  console.log('[awail] total verses:', ayahs.length);
+  console.log('[awail] first verse:', ayahs[0] ? ayahs[0].text.slice(0, 40) : 'none');
+  console.log('[awail] stems with 2+ verses:', multiStems.length);
+  multiStems.forEach(([stem, verses]) => {
+    const conns = verses.map(v => getConnector(v.text).key).join(' / ');
+    console.log('  stem="' + stem + '" | ayahs:' + verses.map(v => v.numberInSurah).join(',') + ' | conns:' + conns);
+  });
+
   const groups = [];
   for (const [stem, verses] of map) {
     if (verses.length < 2) continue;
@@ -260,7 +272,7 @@ function findGroups(ayahs) {
     groups.push({ stem, verses });
   }
 
-  // Sort by verse number of first member
+  console.log('[awail] groups with mixed connectors:', groups.length);
   groups.sort((a, b) => a.verses[0].numberInSurah - b.verses[0].numberInSurah);
   return groups;
 }
@@ -298,36 +310,34 @@ function renderGroups(groups) {
   document.getElementById('group-count').textContent = toAr(filtered.length);
 
   if (filtered.length === 0) {
-    container.innerHTML = '<div class="error-state">لا توجد مجموعات لهذا الفلتر</div>';
+    container.innerHTML = '<div class="error-state" style="padding:40px 20px">لم يُرصَد تشابه بهذا النمط داخل السورة<br><small style="font-size:12px;margin-top:8px;display:block">افتح Developer Tools ثم Console للاطلاع على تفاصيل التحليل</small></div>';
     return;
   }
 
-  filtered.forEach(({ stem, verses }) => {
-    const rows = verses.map(v => {
+  filtered.forEach(function(g) {
+    const stem = g.stem, verses = g.verses;
+    const rows = verses.map(function(v) {
       const conn  = getConnector(v.text);
       const label = conn.key !== 'none' ? getConnectorLabel(v.text) : 'بدون';
-      return `
-        <div class="verse-row">
-          <span class="conn-badge ${conn.cls}">${label}</span>
-          <span class="verse-num">${toAr(v.numberInSurah)}</span>
-          <span class="verse-text">${highlightOpening(v.text, conn)}</span>
-        </div>`;
+      return '<div class="verse-row">'
+        + '<span class="conn-badge ' + conn.cls + '">' + label + '</span>'
+        + '<span class="verse-num">' + toAr(v.numberInSurah) + '</span>'
+        + '<span class="verse-text">' + highlightOpening(v.text, conn) + '</span>'
+        + '</div>';
     }).join('');
 
     const card = document.createElement('div');
     card.className = 'group-card';
-    card.innerHTML = `
-      <div class="group-head">
-        <span class="group-head-label">الجذر المشترك</span>
-        <span class="group-stem-text">${stem}…</span>
-      </div>
-      <div class="group-verses">${rows}</div>`;
+    card.innerHTML = '<div class="group-head">'
+      + '<span class="group-head-label">الجذر المشترك</span>'
+      + '<span class="group-stem-text">' + stem + '…</span>'
+      + '</div><div class="group-verses">' + rows + '</div>';
     container.appendChild(card);
   });
 }
 
 // ── Boot ───────────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', async function() {
   try {
     const res   = await fetch(API_URL);
     const json  = await res.json();
@@ -337,7 +347,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('controls').style.display     = 'flex';
     document.getElementById('review-note').style.display  = 'block';
     renderGroups(ALL_GROUPS);
-  } catch (_) {
+  } catch(e) {
+    console.error('[awail] fetch error:', e);
     document.getElementById('loading').style.display = 'none';
     document.getElementById('error').style.display   = 'block';
   }
