@@ -559,7 +559,13 @@ NEAR.forEach(p => {
 // ── Modal ──────────────────────────────────────────────────────────
 const VERSE_CACHE = {};
 
-function openModal(num) {
+// Start loading quran-uthmani.json immediately — openModal awaits this promise
+const _uthmaniReady = fetch('../../assets/data/quran-uthmani.json')
+  .then(r => r.json())
+  .then(data => initQuranText(data))
+  .catch(e => console.error('[mutashabihat] failed to load quran-uthmani.json', e));
+
+async function openModal(num) {
   const v = VERSES[num];
   if (!v) return;
 
@@ -575,11 +581,8 @@ function openModal(num) {
 
   if (VERSE_CACHE[num]) { bodyEl.innerHTML = VERSE_CACHE[num]; return; }
 
+  await _uthmaniReady;
   const full = getAyah(4, num);
-  if (!full) {
-    bodyEl.innerHTML = '<span style="color:var(--muted)">جارٍ تحميل البيانات…</span>';
-    return;
-  }
 
   let html;
   if (full.includes(v.end)) {
@@ -596,16 +599,14 @@ function closeModal() {
   document.getElementById('modal-overlay').classList.remove('open');
 }
 
-document.getElementById('modal-overlay').addEventListener('click', function(e) {
-  if (e.target === this) closeModal();
+// modal-overlay is defined after this script tag, so attach listener after DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('modal-overlay').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
 });
 
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-fetch('../../assets/data/quran-uthmani.json')
-  .then(r => r.json())
-  .then(data => initQuranText(data))
-  .catch(e => console.error('[mutashabihat] failed to load quran-uthmani.json', e));
 
 
 </script>
