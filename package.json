@@ -1,0 +1,6 @@
+{
+  "name": "quran-study-tests",
+  "scripts": {
+    "test": "node --test tests/*.mjs"
+  }
+}

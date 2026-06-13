@@ -1,0 +1,73 @@
+{
+  "wawNone": {
+    "sharedWords": 4,
+    "members": [
+      { "s": 1,  "a": 2,   "conn": "none" },
+      { "s": 37, "a": 182, "conn": "waw"  }
+    ],
+    "stem": ["الحمد", "لله", "رب", "العلمين"]
+  },
+  "wawFa": {
+    "sharedWords": 4,
+    "members": [
+      { "s": 2,  "a": 82,  "conn": "waw"  },
+      { "s": 4,  "a": 57,  "conn": "waw"  },
+      { "s": 4,  "a": 122, "conn": "waw"  },
+      { "s": 7,  "a": 42,  "conn": "waw"  },
+      { "s": 13, "a": 29,  "conn": "none" },
+      { "s": 22, "a": 50,  "conn": "fa"   },
+      { "s": 29, "a": 7,   "conn": "waw"  },
+      { "s": 29, "a": 9,   "conn": "waw"  },
+      { "s": 29, "a": 58,  "conn": "waw"  },
+      { "s": 47, "a": 2,   "conn": "waw"  }
+    ],
+    "stem": ["الذين", "ءامنوا", "وعملوا", "الصلحت"]
+  },
+  "threeMemb": {
+    "sharedWords": 2,
+    "members": [
+      { "s": 1,  "a": 2,   "conn": "none" },
+      { "s": 14, "a": 39,  "conn": "none" },
+      { "s": 37, "a": 182, "conn": "waw"  }
+    ],
+    "stem": ["الحمد", "لله"]
+  },
+  "fiveWords": {
+    "sharedWords": 5,
+    "members": [
+      { "s": 2,  "a": 27,  "conn": "none" },
+      { "s": 13, "a": 25,  "conn": "waw"  }
+    ],
+    "stem": ["الذين", "ينقضون", "عهد", "الله", "من"]
+  },
+  "crossNisa": {
+    "note": "same as wawFa: includes 4:57 and 4:122 alongside other surahs",
+    "sharedWords": 4,
+    "members": [
+      { "s": 2,  "a": 82,  "conn": "waw"  },
+      { "s": 4,  "a": 57,  "conn": "waw"  },
+      { "s": 4,  "a": 122, "conn": "waw"  },
+      { "s": 7,  "a": 42,  "conn": "waw"  },
+      { "s": 13, "a": 29,  "conn": "none" },
+      { "s": 22, "a": 50,  "conn": "fa"   },
+      { "s": 29, "a": 7,   "conn": "waw"  },
+      { "s": 29, "a": 9,   "conn": "waw"  },
+      { "s": 29, "a": 58,  "conn": "waw"  },
+      { "s": 47, "a": 2,   "conn": "waw"  }
+    ],
+    "stem": ["الذين", "ءامنوا", "وعملوا", "الصلحت"]
+  },
+  "oneWord": {
+    "sharedWords": 1,
+    "members": [
+      { "s": 2,  "a": 25,  "conn": "waw"  },
+      { "s": 4,  "a": 138, "conn": "none" },
+      { "s": 33, "a": 47,  "conn": "waw"  }
+    ],
+    "stem": ["بشر"]
+  },
+  "negative": [
+    { "s": 4, "a": 3,  "conn": "waw" },
+    { "s": 4, "a": 35, "conn": "waw" }
+  ]
+}
