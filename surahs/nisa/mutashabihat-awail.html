@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -209,22 +209,22 @@ let currentFilter = 'all';
 function normalize(text) {
   return text
     .replace(/[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06ED]/g, '')
-    .replace(/ٱ/g, 'ا')
+    .replace(/\u0671/g, '\u0627')
     .replace(/\s+/g, ' ')
     .trim();
 }
 
 function getConnector(text) {
   const n = normalize(text);
-  if (n.charAt(0) === 'و') return { key: 'waw',  cls: 'conn-waw',  hlCls: 'hl-waw' };
-  if (n.charAt(0) === 'ف') return { key: 'fa',   cls: 'conn-fa',   hlCls: 'hl-fa'  };
+  if (n.charAt(0) === '\u0648') return { key: 'waw',  cls: 'conn-waw',  hlCls: 'hl-waw' };
+  if (n.charAt(0) === '\u0641') return { key: 'fa',   cls: 'conn-fa',   hlCls: 'hl-fa'  };
   return                                { key: 'none', cls: 'conn-none', hlCls: ''       };
 }
 
 function getStem(text) {
   const n = normalize(text);
   const first = n.charAt(0);
-  const stripped = (first === 'و' || first === 'ف') ? n.slice(1) : n;
+  const stripped = (first === '\u0648' || first === '\u0641') ? n.slice(1) : n;
   return stripped.trim().split(/\s+/).slice(0, STEM_WORDS).join(' ');
 }
 
