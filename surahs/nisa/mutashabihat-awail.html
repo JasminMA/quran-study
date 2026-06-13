@@ -198,26 +198,47 @@ main { max-width: 900px; margin: 24px auto 60px; padding: 0 20px; }
 <script src="../../assets/js/utils.js"></script>
 <script>
 
-const API_URL   = 'https://api.alquran.cloud/v1/surah/4/quran-uthmani';
-const STEM_WORDS = 4;
+const API_URL    = 'https://api.alquran.cloud/v1/surah/4/quran-uthmani';
+const STEM_WORDS = 2;
+// Unicode range for Arabic diacritics (tashkeel)
+const DIACRITICS = /[ً-ٟؐ-ؚۖ-ۜ۟-۪ۤۧۨ-ٰۭ]/g;
 
 let ALL_GROUPS    = [];
 let currentFilter = 'all';
 
 // ── Connector helpers ──────────────────────────────────────────────
+function stripDiacritics(text) {
+  return text.replace(DIACRITICS, '');
+}
+
 function getConnector(text) {
-  if (/^وَ/.test(text)) return { char: 'وَ', key: 'waw',  cls: 'conn-waw',  hlCls: 'hl-waw' };
-  if (/^فَ/.test(text)) return { char: 'فَ', key: 'fa',   cls: 'conn-fa',   hlCls: 'hl-fa'  };
-  return                        { char: '',   key: 'none', cls: 'conn-none', hlCls: ''       };
+  // Detect connector from bare letter (diacritics-agnostic)
+  const bare = stripDiacritics(text);
+  if (/^و/.test(bare)) return { key: 'waw',  cls: 'conn-waw',  hlCls: 'hl-waw' };
+  if (/^ف/.test(bare)) return { key: 'fa',   cls: 'conn-fa',   hlCls: 'hl-fa'  };
+  return                       { key: 'none', cls: 'conn-none', hlCls: ''       };
+}
+
+function getConnectorLabel(text) {
+  // Extract the actual letter + its diacritics from the original text for display
+  const m = text.match(/^([وف][ً-ٟؐ-ؚٰ]*)/);
+  return m ? m[1] : 'بدون';
 }
 
 function getStem(text) {
-  return text.replace(/^[وف]َ/, '').trim().split(/\s+/).slice(0, STEM_WORDS).join(' ');
+  // Strip diacritics + leading connector, then take first N words as grouping key
+  return stripDiacritics(text)
+    .replace(/^[وف]\s*/, '')
+    .trim()
+    .split(/\s+/)
+    .slice(0, STEM_WORDS)
+    .join(' ');
 }
 
 function highlightOpening(text, conn) {
-  if (!conn.char) return text;
-  const m = text.match(/^([وف]َ)([\s\S]*)/);
+  if (conn.key === 'none') return text;
+  // Match the connector letter plus all immediately following diacritics
+  const m = text.match(/^([وف][ً-ٟؐ-ؚٰ]*)([\s\S]*)/);
   if (!m) return text;
   return `<span class="${conn.hlCls}">${m[1]}</span>${m[2]}`;
 }
@@ -284,7 +305,7 @@ function renderGroups(groups) {
   filtered.forEach(({ stem, verses }) => {
     const rows = verses.map(v => {
       const conn  = getConnector(v.text);
-      const label = conn.char || 'بدون';
+      const label = conn.key !== 'none' ? getConnectorLabel(v.text) : 'بدون';
       return `
         <div class="verse-row">
           <span class="conn-badge ${conn.cls}">${label}</span>
