@@ -191,7 +191,7 @@ main { max-width: 900px; margin: 24px auto 60px; padding: 0 20px; }
   <div class="groups-container" id="groups-container"></div>
 
   <div class="review-note" id="review-note" style="display:none">
-    ⚠ هذه المجموعات مولَّدة تلقائياً بتحليل مطالع الآيات — بعضها قد يحتاج مراجعة يدوية
+  البيانات مجلوبة من مصدر موثوق — التحليل آلي يقارن بدايات الآيات بعد حذف حروف العطف
   </div>
 </main>
 
@@ -207,7 +207,7 @@ let currentFilter = 'all';
 // ── Text normalization ─────────────────────────────────────────────
 function normalize(text) {
   return text
-    .replace(/[ً-ٰٟۖ-ۜ۟-۪ۤۧۨ-ۭ]/g, '')
+    .replace(/[ؐ-ًؚ-ٰٟۖ-ۭ]/g, '')
     .replace(/ٱ/g, 'ا')
     .replace(/\s+/g, ' ')
     .trim();
@@ -254,15 +254,7 @@ function findGroups(ayahs) {
     map.get(stem).push(ayah);
   }
 
-  // Debug output in console
-  const multiStems = [...map.entries()].filter(([, v]) => v.length >= 2);
-  console.log('[awail] total verses:', ayahs.length);
-  console.log('[awail] first verse:', ayahs[0] ? ayahs[0].text.slice(0, 40) : 'none');
-  console.log('[awail] stems with 2+ verses:', multiStems.length);
-  multiStems.forEach(([stem, verses]) => {
-    const conns = verses.map(v => getConnector(v.text).key).join(' / ');
-    console.log('  stem="' + stem + '" | ayahs:' + verses.map(v => v.numberInSurah).join(',') + ' | conns:' + conns);
-  });
+
 
   const groups = [];
   for (const [stem, verses] of map) {
@@ -272,7 +264,7 @@ function findGroups(ayahs) {
     groups.push({ stem, verses });
   }
 
-  console.log('[awail] groups with mixed connectors:', groups.length);
+
   groups.sort((a, b) => a.verses[0].numberInSurah - b.verses[0].numberInSurah);
   return groups;
 }
